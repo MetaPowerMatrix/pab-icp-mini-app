@@ -1,0 +1,69 @@
+.content {
+    max-width: 430px;
+    height: 900px;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.image_display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main_image {
+    width: 380px;
+    height: 300px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow: scroll;
+}
+
+.thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+.prompt {
+    margin-top: 40px;
+    text-align: left;
+    font-size: 12px;
+}
+.prompt h3{
+    margin-bottom: 10px;
+    font-weight: unset;
+    font-size: 16px;
+}
+
+.actions {
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.action_button {
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    width: 90%;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.finalize_btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}

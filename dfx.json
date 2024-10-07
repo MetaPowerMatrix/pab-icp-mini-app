@@ -1,0 +1,11 @@
+{
+    "canisters": {
+      "minishop": {
+        "frontend": {
+          "entrypoint": "out/index.html"
+        },
+        "source": ["out"],
+        "type": "assets"
+      }
+    }
+}

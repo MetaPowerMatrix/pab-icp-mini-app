@@ -1,0 +1,14 @@
+.sharedKnowledges_container_mobile {
+    width: 100%;
+    height: 450px;
+    background-color: white;
+}
+.sharedKnowledges_content_mobile {
+    background-color: white;
+    height: 100%;
+    overflow-Y: scroll;
+    width: 100%;
+}
+.list_item {
+    background-color: lightblue;
+}

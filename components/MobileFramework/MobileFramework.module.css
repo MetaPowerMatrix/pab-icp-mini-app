@@ -1,0 +1,66 @@
+.content {
+    font-family: Arial, sans-serif;
+    padding: 16px;
+    background-color: black;
+}
+
+.app_header {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+    height: 100px;
+}
+
+.get_pro {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    height: 40px;
+}
+
+.input_section {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 10px;
+    background-color: white;
+}
+
+.prompt_input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+}
+
+.style_options {
+    width: 100%;
+    margin: 10px 0 0 0;
+}
+
+.add_image_btn{
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.style_select {
+    padding: 5px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    height: 30px;
+    font-size: 12px;
+}
+
+.chatlist_container {
+    background-image: linear-gradient(to bottom, #ffffff, #eeeeee);
+    height: 494px;
+    margin-top: 60px;
+}
