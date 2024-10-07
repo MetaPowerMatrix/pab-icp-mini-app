@@ -1,6 +1,6 @@
 {
     "canisters": {
-      "minishop": {
+      "PABIcpMiniApp": {
         "frontend": {
           "entrypoint": "out/index.html"
         },
