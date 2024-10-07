@@ -141,12 +141,11 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 					                           my_name={name} kol_name={kolName} id={activeId} room_id={roomId} visible={showKolRoom} onShowProgress={onShowProgress}
                      onClose={()=>setShowKolRoom(false)}/>
 
-					<BuyKolComponent id={activeId} room_id={roomId}
+					<BuyKolComponent id={activeId} room_id={roomId} buyWhat={buyWhat}
              onClose={()=> {
 							 setReload(reload + 1)
 							 setShowBuyKol(false)
 						 }}
-             visible={showBuyKol} onShowProgress={onShowProgress} buyWhat={buyWhat}
 					/>
 				</div>
 			</div>
