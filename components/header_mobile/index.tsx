@@ -94,8 +94,9 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const handleSubmitTags = () => {
 		onShowProgress(true)
 		command.submit_pato_tags(myTags, activeId).then((resp)=>{
-			setAvatar(resp)
+			// setAvatar(resp)
 			onShowProgress(false)
+			setReload(reload+1)
 		})
 	};
 	const handleOpenChange = (newOpen: boolean) => {
