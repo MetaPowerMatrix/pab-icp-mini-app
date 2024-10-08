@@ -830,8 +830,8 @@ const useCommand = () => {
     }
     return []
   }
-  const become_kol = async (id: string) => {
-    let url = getApiServer(80) + api_url.portal.town.becom_kol + "/" + id
+  const become_kol = async (id: string, from: string) => {
+    let url = getApiServer(80) + api_url.portal.town.becom_kol + "/" + id + "/" + from
     try {
       let response = await fetch(`${url}`,)
     } catch (e) {

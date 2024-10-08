@@ -58,9 +58,9 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 					Modal.success({
 						content: t('buyKol_ok')
 					})
-					command.become_kol(id).then((res) => {
+					command.become_kol(id, myAddress).then((res) => {
 						command.queryPatoKolToken(id).then((res)=>{
-							onClose(res.token)
+							onClose(res?.token ?? "")
 						})
 					})
 				}

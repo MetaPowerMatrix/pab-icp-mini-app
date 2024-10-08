@@ -83,13 +83,13 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				setMyTags(res.tags)
 			}
 		})
-		command.queryPatoKolToken(activeId).then((res)=>{
-			if (res && res.token !== ""){
-				setToken(res.token)
-				setIsKol(true)
-			}
-		})
-	},[activeId]);
+		// command.queryPatoKolToken(activeId).then((res)=>{
+		// 	if (res && res.token !== ""){
+		// 		setToken(res.token)
+		// 		setIsKol(true)
+		// 	}
+		// })
+	},[activeId, reload]);
 
 	const handleSubmitTags = () => {
 		onShowProgress(true)
@@ -207,7 +207,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 			</div>
 			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
 				<QRCodeComponent id={activeId} isKol={isKol} token={token} onBuyToken={(token)=>{
-					setReload(reload+1)
+					setReload(reload+1); if (token !== ""){ setIsKol(true); setToken(token) }
 				}}/>
 			</SlidePanel>
 			<SubscriptionsComponent mobile={false} id={activeId} onClose={() => setShowSubscription(false)}

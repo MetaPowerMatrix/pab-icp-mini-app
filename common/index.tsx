@@ -2,7 +2,7 @@ import { Vector3 } from 'three'
 
 export const tokenAbi = [{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"symbol","type":"string"},{"internalType":"uint8","name":"decimals","type":"uint8"},{"internalType":"uint256","name":"totalSupply","type":"uint256"}],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]
 export const tokenContractAddress = "0xD6311f9A6bd3a802263F4cd92e2729bC2C31Ed23"
-export const recipientAddress = '0xd951AA2182A55aEeE6D32b1be11ebAEe61Cb2623'
+export const recipientAddress = '0x40B92673B50d4cA94AAF38007fCf12B7D24abe48'
 export const host = "icp.metapowermatrix.ai"
 export const Web_Server = "https://"+ host
 export const Streaming_Server = "wss://ws.metapowermatrix.ai"
@@ -146,7 +146,7 @@ export const api_url = {
       "shared": '/api/knowledge/shared',
       "hot": '/api/kol/hots',
       "hotpros": '/api/pro/hots',
-      "hot_topics": '/api/town/hot/topics',
+      "hot_topics": '/api/kol/hot/topics',
       "topic_chat_his": '/api/topic/chat/history'
     },
     'auth':{
@@ -155,25 +155,25 @@ export const api_url = {
       'info': '/api/pato/kol/info'
     },
     'town':{
-      "gen_scene": '/api/town/generate/scene',
-      "image_parse": '/api/town/image/description',
-      "image_chat": '/api/town/chat/image',
-      "list_game": '/api/town/game/rooms',
-      "create_game": '/api/town/create/game',
-      "join_game": '/api/town/join/game',
-      "game_clue": '/api/town/game/clue',
-      "send_answer": '/api/town/game/send/answer',
-      "accept_answer": '/api/town/game/accept/answer',
-      "reveal_answer": '/api/town/game/reveal/answer',
-      "generate_answer": '/api/town/game/answer/image',
-      "kol_list":"/api/town/kol/list",
-      "becom_kol": "/api/town/become/kol",
-      "join_kol": "/api/town/follow/kol",
-      "marriage_list":"/api/town/marriage/list",
+      "gen_scene": '/api/kol/generate/scene',
+      "image_parse": '/api/kol/image/description',
+      "image_chat": '/api/kol/chat/image',
+      "list_game": '/api/kol/game/rooms',
+      "create_game": '/api/kol/create/game',
+      "join_game": '/api/kol/join/game',
+      "game_clue": '/api/kol/game/clue',
+      "send_answer": '/api/kol/game/send/answer',
+      "accept_answer": '/api/kol/game/accept/answer',
+      "reveal_answer": '/api/kol/game/reveal/answer',
+      "generate_answer": '/api/kol/game/answer/image',
+      "kol_list":"/api/kol/kol/list",
+      "becom_kol": "/api/kol/become/kol",
+      "join_kol": "/api/kol/follow/kol",
+      "marriage_list":"/api/kol/marriage/list",
       "like_marriage_owner": "/api/like/marriage/{follower}/{owner}",
       "join_marriage": "/api/join/marriage/",
-      "game_scene_context": '/api/town/game/scene/context',
-      "game_scene_prompt": '/api/town/game/scene/prompt',
+      "game_scene_context": '/api/kol/game/scene/context',
+      "game_scene_prompt": '/api/kol/game/scene/prompt',
     },
     'task': {
       'pray': '/api/pray',
