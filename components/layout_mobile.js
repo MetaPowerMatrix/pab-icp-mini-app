@@ -146,7 +146,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                             <>
                                 <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
                                 <Tabs
-                                    destroyInactiveTabPane={false}
+                                    destroyInactiveTabPane={true}
                                     tabBarGutter={80}
                                     tabBarStyle={{backgroundColor: 'black', marginTop: 0}}
                                     centered

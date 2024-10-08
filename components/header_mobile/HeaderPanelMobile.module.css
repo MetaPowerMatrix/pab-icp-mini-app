@@ -7,8 +7,8 @@
     /*background-image: linear-gradient(to bottom, #fff, #eee);*/
 }
 .header_user{
-    padding: 15px;
     background-color: black;
+    padding-top: 10px;
     height: 170px;
     color: white;
     /*-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 50%);*/

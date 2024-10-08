@@ -121,49 +121,39 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				backgroundSize: "cover",
 			}}
 			>
-				<Row align={"middle"}>
-					<Col span={5} style={{textAlign: "center"}}>
-						<img
-							src={avatar}
-							className={utilStyles.borderCircle}
-							height={72}
-							width={72}
-							alt={userInfo?.name ?? ''}
-						/>
-					</Col>
-					<Col span={13}>
-						<h5 className={utilStyles.headingLg}>
-							{userInfo?.name}
-						</h5>
-						<h5>{t("Balance")}: {userInfo?.balance.toString()}</h5>
-						{/*<h5>{t("RegisteredTime")}: {userInfo?.registered_datetime}</h5>*/}
-						{/*<h5>{t("SN")}: {pad(userInfo === undefined ? 0 : userInfo.sn, 5).toString()}</h5>*/}
-
-						{/*<a onClick={() => {*/}
-						{/*	copyToClipboard(userInfo?.id ?? '')*/}
-						{/*	Modal.success({*/}
-						{/*		content: ("已复制ID")*/}
-						{/*	})*/}
-						{/*}}>{userInfo?.id === undefined ? '' : userInfo?.id.substring(0, 14) + '...' + userInfo?.id.substring(28, 36)}</a>*/}
-					</Col>
-					<Col span={5} style={{textAlign: "end"}}>
-						<QrcodeOutlined style={{fontSize: 36}} onClick={()=> {
+					<Row style={cover ? {backgroundColor: "#00000080", padding: 10 } : {padding: 10}}>
+						<Col span={5} style={{textAlign: "center"}}>
+							<img
+								src={avatar}
+								className={utilStyles.borderCircle}
+								height={72}
+								width={72}
+								alt={userInfo?.name ?? ''}
+							/>
+						</Col>
+						<Col span={13}>
+							<h5 className={utilStyles.headingLg}>
+								{userInfo?.name}
+							</h5>
+							<h5>{t("Balance")}: {userInfo?.balance.toString()}</h5>
+						</Col>
+						<Col span={5} style={{textAlign: "end"}}>
+							<QrcodeOutlined style={{fontSize: 36}} onClick={()=> {
 								setPopContent("become_kol")
 								setOpenPanel(true)
-						}}/>
-					</Col>
-				</Row>
+							}}/>
+						</Col>
+					</Row>
 			</div>
 
 			<div className={styles.header_panel_mobile_info}>
 				<Card bodyStyle={{padding: 5}} style={{
-					marginLeft: 20,
-					marginRight: 20,
+					marginLeft: 15,
+					marginRight: 15,
 					top: 105,
 					zIndex: 3,
 					position: "absolute",
 					height: 555,
-					width: 370,
 					overflow: "scroll",
 					backgroundImage: "linear-gradient(to bottom, #eee, #fff)"
 				}}>
