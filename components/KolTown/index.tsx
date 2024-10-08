@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Col, Modal, Row, Button, Tabs} from "antd";
 import styles from "./KolTownComponent.module.css";
-import {KolInfo} from "@/common";
+import {KolInfo, recipientAddress} from "@/common";
 import {useTranslations} from "next-intl";
 import commandDataContainer from "@/container/command";
 import AIInstructMobileComponent from "@/components/AIInstructMobile";
@@ -141,7 +141,7 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 					                           my_name={name} kol_name={kolName} id={activeId} room_id={roomId} visible={showKolRoom} onShowProgress={onShowProgress}
                      onClose={()=>setShowKolRoom(false)}/>
 
-					<BuyKolComponent id={activeId} room_id={roomId} buyWhat={buyWhat}
+					<BuyKolComponent recipient={recipientAddress} id={activeId} room_id={roomId} buyWhat={buyWhat}
              onClose={()=> {
 							 setReload(reload + 1)
 							 setShowBuyKol(false)
