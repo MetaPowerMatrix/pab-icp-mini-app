@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Col, Divider, Modal, Row} from "antd";
 import {useTranslations} from "next-intl";
-import {api_url, getApiServer, recipientAddress, tokenAbi, tokenContractAddress} from "@/common";
+import {tokenAbi, tokenContractAddress} from "@/common";
 import commandDataContainer from "@/container/command";
 import Web3 from "web3";
 
@@ -10,6 +10,7 @@ interface SubscriptionsPros {
 	room_id: string,
 	onClose: (token: string)=>void;
 	buyWhat: string;
+	recipient: string,
 }
 declare global {
 	interface Window {
@@ -17,10 +18,11 @@ declare global {
 	}
 }
 
-const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, room_id}) => {
+const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, room_id, recipient}) => {
 	const t = useTranslations('others');
 	const [amount, setAmount] = useState<number>(0.0)
 	const [tips, setTips] = useState<string>('')
+	const [btnText, setBtnText] = useState<string>(t("buyKol"))
 	const command = commandDataContainer.useContainer()
 
 	useEffect(()=>{
@@ -28,13 +30,15 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 			// setAmount(10000.0)
 			setAmount(10.0) //测试数值
 			setTips(t('shouldKol'))
+			setBtnText(t("buyKol"))
 		}
 		if (buyWhat === 'follow'){
-			setAmount(10.0) // 测试数值
+			setAmount(25.0) // 测试数值
 			// setAmount(1000.0)
 			setTips(t('buyTicket'))
+			setBtnText(t("buyTicketText"))
 		}
-	})
+	},[])
 
 	const transferToken = async (id: string, amount: number, web3: Web3) => {
 		// const web3 = new Web3(window.ethereum)
@@ -48,7 +52,7 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 		// const amountInWei = web3.utils.toWei(amount, 'ether');
 		const value = amount * (10 ** decimals); // Adjust amount by token's decimals
 		console.log("send token:", value)
-		tokenContract.methods.transfer(recipientAddress, value).send({from: myAddress})
+		tokenContract.methods.transfer(recipient, value).send({from: myAddress})
 			.on('transactionHash', function(hash){
 				console.log(`Transaction hash: ${hash}`);
 			})
@@ -68,7 +72,7 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 					Modal.success({
 						content: t('buyFollow_ok')
 					})
-					command.join_kol(id, room_id).then((res) => {
+					command.join_kol(id, room_id, myAddress).then((res) => {
 						console.log(res)
 					})
 				}
@@ -131,9 +135,9 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 				<div style={{textAlign: "center"}}>
 					<h4>{tips}</h4>
 					<Row>
-						<Col span={20} style={{textAlign:"center", marginTop: 30}}>
+						<Col span={24} style={{textAlign:"center", marginTop: 30}}>
 							<Button htmlType="submit" onClick={()=>handleSubmit()}>
-								<img alt={"pab"} className={"pab_logo"} src={"/images/pab.jpg"}/>{t("buyKol")}
+								<img alt={"pab"} className={"pab_logo"} src={"/images/pab.jpg"}/>{btnText}
 							</Button>
 						</Col>
 						{/*<Col span={12} style={{textAlign:"center"}}>*/}
@@ -147,14 +151,6 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 						<a target={"_blank"}
 						   href={"https://pancakeswap.finance/swap?outputCurrency=0xD6311f9A6bd3a802263F4cd92e2729bC2C31Ed23&inputCurrency=0x55d398326f99059fF775485246999027B3197955"}>PAB购买地址</a>
 					</Col>
-					{/*<Col span={8} style={{textAlign: "center"}}>*/}
-					{/*	<Popover*/}
-					{/*		content={<Image width={246} height={336} onClick={() => alert(t('scan'))} src={"/images/wepay.png"}*/}
-					{/*		                alt={"scan"}/>} title={t('scan')}>*/}
-					{/*		<Button type="primary">{t('scan_btn')}</Button>*/}
-					{/*	</Popover>*/}
-
-					{/*</Col>*/}
 					<Col span={12} style={{textAlign: "center"}}>
 						<a target={"_blank"}
 						   href={"https://bscscan.com/address/0xd6311f9a6bd3a802263f4cd92e2729bc2c31ed23"}>PAB合约地址</a>

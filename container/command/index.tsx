@@ -818,12 +818,7 @@ const useCommand = () => {
       if (response.ok) {
         let dataJson = await response.json()
         let rooms: KolInfo[] = JSON.parse(dataJson.content)
-        return rooms.map<KolInfo>((room) => {
-          if (room.avatar === ''){
-            room.avatar = '/images/notlogin.png'
-          }
-          return room
-        })
+        return rooms
       }
     } catch (e) {
       console.log(e)
@@ -838,8 +833,8 @@ const useCommand = () => {
       console.log(e)
     }
   }
-  const join_kol = async (follower:string, id: string) => {
-    let url = getApiServer(80) + api_url.portal.town.join_kol + "/" + follower + "/" + id
+  const join_kol = async (follower:string, id: string, from: string) => {
+    let url = getApiServer(80) + api_url.portal.town.join_kol + "/" + follower + "/" + id + "/" + from
     try {
       let response = await fetch(`${url}`,)
     } catch (e) {

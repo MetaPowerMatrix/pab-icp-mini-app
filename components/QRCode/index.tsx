@@ -4,6 +4,7 @@ import styles from "./QRCodeComponent.module.css"
 import QRCode from 'qrcode.react';
 import {Button, Col, Form, Modal, Row} from "antd";
 import BuyKolComponent from "@/components/BuyKol";
+import {recipientAddress} from "@/common";
 
 interface QRCodeProps {
 	id: string,
@@ -47,7 +48,7 @@ const QRCodeComponent: React.FC<QRCodeProps> = ({id, isKol, token, onBuyToken}) 
 							</Row>
 						</>
 						:
-						<BuyKolComponent id={id} room_id={''}  buyWhat={'kol'}
+						<BuyKolComponent recipient={recipientAddress} id={id} room_id={''}  buyWhat={'kol'}
 	             onClose={onBuyToken}
 						/>
 				}

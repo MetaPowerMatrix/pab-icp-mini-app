@@ -2,20 +2,21 @@ import {Button, Card, Col, Descriptions, Divider, Flex, Modal, Popover, Row, Tim
 import utilStyles from "@/styles/utils.module.css";
 import {
 	EditOutlined,
-	GoldFilled,
+	GoldFilled, PlusOutlined,
 	QrcodeOutlined, ShareAltOutlined,
 	TagsOutlined, UploadOutlined
 } from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import commandDataContainer from "@/container/command";
 import {useTranslations} from "next-intl";
-import {PatoInfo} from "@/common";
+import {KolInfo, PatoInfo} from "@/common";
 import styles from './HeaderPanelMobile.module.css'
 import SubscriptionsComponent from "@/components/Subscriptions";
 import QRCodeComponent from "@/components/QRCode";
 import Meta from "antd/es/card/Meta";
 import TagsComponent from "@/components/tags";
 import SlidePanel from "@/components/SlidePanel";
+import KOLListComponent from "@/components/KOL";
 
 const pad = function(src: Number, size: number) {
 	let s = String(src);
@@ -56,7 +57,6 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 {
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const command = commandDataContainer.useContainer()
-	const [showSubscription, setShowSubscription] = useState<boolean>(false)
 	const [openPanel, setOpenPanel] = useState<boolean>(false)
 	const [avatar, setAvatar] = useState('/images/notlogin.png')
 	const [cover, setCover] = useState<string|undefined>(undefined)
@@ -66,6 +66,9 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const [isKol, setIsKol] = useState<boolean>(false)
 	const [token, setToken] = useState<string>("")
 	const [reload, setReload] = useState<number>(0)
+	const [kols, setKols] = useState<KolInfo[]>([])
+	const [myKol, setMyKol] = useState<KolInfo|undefined>(undefined)
+	const [popContent, setPopContent] = useState<string>("become_kol")
 	const t = useTranslations('Login');
 
 	useEffect(()=>{
@@ -83,12 +86,20 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				setMyTags(res.tags)
 			}
 		})
-		// command.queryPatoKolToken(activeId).then((res)=>{
-		// 	if (res && res.token !== ""){
-		// 		setToken(res.token)
-		// 		setIsKol(true)
-		// 	}
-		// })
+		command.queryPatoKolToken(activeId).then((res)=>{
+			if (res && res.token !== ""){
+				setToken(res.token)
+				setIsKol(true)
+			}
+		})
+		command.query_kol_rooms().then((res) =>{
+			res.forEach((info) =>{
+				setKols(res)
+				if (info.id === activeId) {
+					setMyKol(info)
+				}
+			})
+		})
 	},[activeId, reload]);
 
 	const handleSubmitTags = () => {
@@ -136,7 +147,10 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 						{/*}}>{userInfo?.id === undefined ? '' : userInfo?.id.substring(0, 14) + '...' + userInfo?.id.substring(28, 36)}</a>*/}
 					</Col>
 					<Col span={5} style={{textAlign: "end"}}>
-						<QrcodeOutlined style={{fontSize: 36}} onClick={()=>setOpenPanel(true)}/>
+						<QrcodeOutlined style={{fontSize: 36}} onClick={()=> {
+								setPopContent("become_kol")
+								setOpenPanel(true)
+						}}/>
 					</Col>
 				</Row>
 			</div>
@@ -190,13 +204,24 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					<div className={styles.info_container}>
 						<Meta title={relationshipHead("我的粉丝")}/>
 						<div>
-							<span>AAA</span><span>BBB</span><span>CCC</span><span>DDD</span>
+							{
+								myKol !== undefined &&
+									myKol.followers.map((follower, index) => {
+										return (
+											<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.substring(0, 5)}</span>
+										)
+									})
+							}
 						</div>
 					</div>
 					<div className={styles.info_container}>
 						<Meta title={relationshipHead("我的关注")}/>
+						<div style={{width: 200}}></div>
 						<div>
-							<span>AAA</span><span>BBB</span><span>CCC</span><span>DDD</span>
+							<PlusOutlined onClick={()=>{
+								setPopContent("follow")
+								setOpenPanel(true)
+							}}/>
 						</div>
 					</div>
 					<Row style={{padding: 10}}>
@@ -207,12 +232,17 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				</Card>
 			</div>
 			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
-				<QRCodeComponent id={activeId} isKol={isKol} token={token} onBuyToken={(token)=>{
-					setReload(reload+1); if (token !== ""){ setIsKol(true); setToken(token) }
-				}}/>
+				{
+					popContent === "become_kol" &&
+            <QRCodeComponent id={activeId} isKol={isKol} token={token} onBuyToken={(token)=>{
+							setReload(reload+1); if (token !== ""){ setIsKol(true); setToken(token) }
+						}}/>
+				}
+				{
+					popContent === "follow" &&
+						<KOLListComponent activeId={activeId} onClose={(token)=>{}} kols={kols}/>
+				}
 			</SlidePanel>
-			<SubscriptionsComponent mobile={false} id={activeId} onClose={() => setShowSubscription(false)}
-			                        visible={showSubscription} onShowProgress={onShowProgress}/>
 		</header>
 	)
 }
