@@ -5,7 +5,7 @@ import commandDataContainer from "../../container/command";
 import {CloseOutlined, ExclamationCircleFilled} from "@ant-design/icons";
 import {useTranslations} from "next-intl";
 
-function ModalLogin({ isOpen, onClose, tips, options, mobile=false }) {
+function ModalLogin({ isOpen, showSplash, onClose, tips, options}) {
 	const [username, setUsername] = useState('');
 	const [userid, setUserid] = useState('');
 	const command = commandDataContainer.useContainer()
@@ -56,11 +56,11 @@ function ModalLogin({ isOpen, onClose, tips, options, mobile=false }) {
 		setUsername(event.target.value)
 	}
 
-	if (!isOpen) return null;
+	if (!isOpen || showSplash) return null;
 
 	return (
 		<div className={styles.modal}>
-			<div className={mobile ? styles.modal_content_mobile : styles.modal_content}>
+			<div className={styles.modal_content_mobile}>
 				<CloseOutlined onClick={() => onClose('')}/>
 				<h4 style={{marginBottom:70, textAlign:"center"}}>{tips('notLoginTips')}</h4>
 				<div className={styles.form_group}>

@@ -64,7 +64,7 @@ const QRCodeComponent: React.FC<QRCodeProps> = ({id}) => {
 						</>
 						:
 						<BuyKolComponent id={id} room_id={''}  buyWhat={'kol'}
-	             onClose={(token: string) => { setReload(reload + 1); setToken(token)}}
+	             onClose={(token: string) => { setReload(reload + 1); setToken(token); setIsKol(true)}}
 						/>
 				}
 		</div>

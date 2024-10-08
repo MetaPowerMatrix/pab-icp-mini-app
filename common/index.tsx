@@ -150,7 +150,7 @@ export const api_url = {
       'edit': '/api/pato/edit/messages',
       'continue': '/api/pato/continue/chat',
       "shared": '/api/knowledge/shared',
-      "hot": '/api/town/hots',
+      "hot": '/api/kol/hots',
       "hotpros": '/api/pro/hots',
       "hot_topics": '/api/town/hot/topics',
       "topic_chat_his": '/api/topic/chat/history'

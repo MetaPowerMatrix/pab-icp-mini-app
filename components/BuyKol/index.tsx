@@ -55,9 +55,6 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 			.on('receipt', function(receipt){
 				console.log('Transaction was confirmed.', buyWhat);
 				if (buyWhat === 'kol') {
-					command.become_kol(id).then((res) => {
-						console.log(res)
-					})
 					Modal.success({
 						content: t('buyKol_ok')
 					})
@@ -68,11 +65,11 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 					})
 				}
 				if (buyWhat === 'follow') {
-					command.join_kol(id, room_id).then((res) => {
-						console.log(res)
-					})
 					Modal.success({
 						content: t('buyFollow_ok')
+					})
+					command.join_kol(id, room_id).then((res) => {
+						console.log(res)
 					})
 				}
 			})

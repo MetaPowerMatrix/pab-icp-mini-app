@@ -171,7 +171,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
             }
 
             <ProgressBarComponent visible={loading} steps={15} />
-            <ModalLogin mobile={true} isOpen={!isLogin} tips={t} options={availableIds}
+            <ModalLogin showSplash={showSplash} isOpen={!isLogin} tips={t} options={availableIds}
                 onClose={(id) => {
                     setIsLogin(true)
                     if (id !== '') {

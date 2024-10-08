@@ -40,12 +40,18 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const [openTeam, setOpenTeam] = useState<boolean>(false)
     const [patos, setPatos] = useState<string[]>([])
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
     const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
     const t = useTranslations('AIInstruct');
     const {confirm} = Modal;
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
+        command.getTownHots().then((res) => {
+            if (res !== null) {
+                setPatos(res.map((item) => item.name))
+            }
+        })
         let ctx = gsap.context(() => {
             gsap.from(headerRef.current, { y: -50, opacity: 0, duration: 1 });
             gsap.from(promptInputRef.current, { y: 50, opacity: 0, duration: 1 });
@@ -148,7 +154,10 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                 placement={"bottomLeft"}
                                 content={
                                     <div style={{width: 270}}>
-                                        <TagsComponent presetTags={[]} tags={aiCharacterTags} myTags={(tags) => { setSelectedTags(tags) }}/>
+                                        <TagsComponent presetTags={[]} tags={patos} myTags={(tags) => {
+                                            setQueryText("@"+tags.join(" @"))
+                                            setSelectedPatos(tags)
+                                        }}/>
                                     </div>
                                 }
                                 trigger="click"
