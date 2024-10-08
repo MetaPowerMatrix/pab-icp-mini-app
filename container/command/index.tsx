@@ -4,7 +4,7 @@ import {
   ChatMessage,
   getApiServer,
   HotPro,
-  KolInfo,
+  KolInfo, KolToken,
   PatoInfo,
   Persona,
   PortalHotAi,
@@ -892,18 +892,21 @@ const useCommand = () => {
     return []
   }
   const queryPatoKolToken = async (id: string | null) => {
-    if (id === null) return []
+    if (id === null) return undefined
     let url = getApiServer(80) + api_url.portal.auth.kol + "/" + id
     try {
       let response = await fetch(`${url}`,)
       if (response.ok) {
         let dataJson = await response.json()
-        return dataJson.content.split(',')
+        if (dataJson.code === '200'){
+          let kolToken: KolToken = JSON.parse(dataJson.content)
+          return kolToken
+        }
       }
     } catch (e) {
       console.log(e)
     }
-    return []
+    return undefined
   }
   const queryPatoByKolToken = async (token: string | null) => {
     if (token === null) return []

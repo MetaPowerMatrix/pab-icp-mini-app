@@ -3,33 +3,17 @@ import {useTranslations} from "next-intl";
 import styles from "./QRCodeComponent.module.css"
 import QRCode from 'qrcode.react';
 import {Button, Col, Form, Modal, Row} from "antd";
-import commandDataContainer from "@/container/command";
 import BuyKolComponent from "@/components/BuyKol";
 
 interface QRCodeProps {
 	id: string,
+	isKol: boolean,
+	token: string,
+	onBuyToken: (token:string)=>void
 }
 
-const QRCodeComponent: React.FC<QRCodeProps> = ({id}) => {
+const QRCodeComponent: React.FC<QRCodeProps> = ({id, isKol, token, onBuyToken}) => {
 	const t = useTranslations('others');
-	const [token, setToken] = React.useState<string>('');
-	const [reload, setReload] = useState<number>(0)
-	const [isKol, setIsKol] = useState<boolean>(false)
-	const command = commandDataContainer.useContainer()
-
-	useEffect(() => {
-		command.query_kol_rooms().then((res) => {
-			let testKol = false
-			res.forEach((info) => {
-				console.log(info)
-				if (info.id === id) {
-					setIsKol(true)
-					testKol = true
-				}
-			})
-			setIsKol(testKol)
-		})
-	},[id, reload])
 
 	const copyToClipboard = async (text: string) => {
 		try {
@@ -64,7 +48,7 @@ const QRCodeComponent: React.FC<QRCodeProps> = ({id}) => {
 						</>
 						:
 						<BuyKolComponent id={id} room_id={''}  buyWhat={'kol'}
-	             onClose={(token: string) => { setReload(reload + 1); setToken(token); setIsKol(true)}}
+	             onClose={onBuyToken}
 						/>
 				}
 		</div>

@@ -17,6 +17,37 @@ import Meta from "antd/es/card/Meta";
 import TagsComponent from "@/components/tags";
 import SlidePanel from "@/components/SlidePanel";
 
+const pad = function(src: Number, size: number) {
+	let s = String(src);
+	while (s.length < (size || 2)) {s = "0" + s;}
+	return s;
+};
+const copyToClipboard = async (text: string) => {
+	try {
+		await navigator.clipboard.writeText(text);
+		console.log('Text copied to clipboard');
+	} catch (err) {
+		console.error('Failed to copy text to clipboard: ', err);
+	}
+};
+
+const awardHead = ()=>{
+	return(
+		<>
+			<GoldFilled style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
+			<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>我的勋章</span>
+		</>
+	)
+}
+
+const relationshipHead = (title: string)=>{
+	return(
+		<>
+			<ShareAltOutlined style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
+			<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>{title}</span>
+		</>
+	)
+}
 const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
    {activeId:string,
 	   onShowProgress: (s: boolean)=>void,
@@ -32,39 +63,10 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const [myTags, setMyTags] = useState<string[]>([]);
 	const [openPop, setOpenPop] = useState<boolean>(false)
 	const [predefinedTags, setPredefinedTags] = useState<string[]>([])
+	const [isKol, setIsKol] = useState<boolean>(false)
+	const [token, setToken] = useState<string>("")
+	const [reload, setReload] = useState<number>(0)
 	const t = useTranslations('Login');
-
-	const awardHead = ()=>{
-		return(
-			<>
-				<GoldFilled style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>我的勋章</span>
-			</>
-		)
-	}
-
-	const relationshipHead = (title: string)=>{
-		return(
-			<>
-				<ShareAltOutlined style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>{title}</span>
-			</>
-		)
-	}
-
-	const pad = function(src: Number, size: number) {
-		let s = String(src);
-		while (s.length < (size || 2)) {s = "0" + s;}
-		return s;
-	};
-	const copyToClipboard = async (text: string) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			console.log('Text copied to clipboard');
-		} catch (err) {
-			console.error('Failed to copy text to clipboard: ', err);
-		}
-	};
 
 	useEffect(()=>{
 		command.getPredefinedTags().then((resp)=>{
@@ -79,6 +81,12 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				setAvatar(res.avatar)
 				setCover(res.cover)
 				setMyTags(res.tags)
+			}
+		})
+		command.queryPatoKolToken(activeId).then((res)=>{
+			if (res && res.token !== ""){
+				setToken(res.token)
+				setIsKol(true)
 			}
 		})
 	},[activeId]);
@@ -175,7 +183,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					<div className={styles.info_container}>
 						<Meta title={awardHead()}/>
 						<div>
-							<span>AAA</span><span>BBB</span><span>CCC</span><span>DDD</span>
+							{isKol && <span style={{color: "#eeb075"}}>KOL</span>}
 						</div>
 					</div>
 					<div className={styles.info_container}>
@@ -198,7 +206,9 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				</Card>
 			</div>
 			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
-				<QRCodeComponent id={activeId}/>
+				<QRCodeComponent id={activeId} isKol={isKol} token={token} onBuyToken={(token)=>{
+					setReload(reload+1)
+				}}/>
 			</SlidePanel>
 			<SubscriptionsComponent mobile={false} id={activeId} onClose={() => setShowSubscription(false)}
 			                        visible={showSubscription} onShowProgress={onShowProgress}/>

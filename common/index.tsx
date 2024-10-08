@@ -13,21 +13,15 @@ export const getApiServer = (port: number) => {
 export const getMQTTBroker = () => {
   return "wss://ws.metapowermatrix.ai/mqtt"
 }
-export interface ListItemType{
-  label: string,
-  value: string,
-  description: string,
-  location: Vector3
+export interface KolToken{
+  id: string,
+  name:string,
+  token:string
 }
 export interface HotPro{
   id: string,
   name: string,
   subjects: string[]
-}
-export interface PortalPayRequest{
-  id: string,
-  item: string,
-  amount: number,
 }
 export interface PortalHotAi{
   id: string,
