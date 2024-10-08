@@ -46,7 +46,6 @@ const AuthorizeComponent: React.FC<AuthorizeComponentProps> = ({mobile}) => {
 	},[jumpUrl])
 
 	const handleAccept = (values: any) => {
-		command.join_kol(id, activeId)
 		alert(t('acceptOK'))
 		setJumpUrl('https://social.metapowermatrix.ai/mobile?to=kol')
 	};
