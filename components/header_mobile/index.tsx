@@ -148,6 +148,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 
 			<div className={styles.header_panel_mobile_info}>
 				<Card bodyStyle={{padding: 5}} style={{
+					minWidth: 400,
 					marginLeft: 15,
 					marginRight: 15,
 					top: 105,

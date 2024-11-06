@@ -1,4 +1,5 @@
 import styles from "./SplashScreen.module.css"
+import React from "react";
 
 const SplashScreen = () => {
 

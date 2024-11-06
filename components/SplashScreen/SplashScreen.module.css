@@ -1,14 +1,15 @@
 .modal {
     z-index: 3;
-    max-width: 430px;
-    height: 900px;
+    max-width: 410px;
+    height: 680px;
     overflow: hidden;
 }
 
 .logo {
     position: fixed;
+    max-width: 400px;
     z-index: 4;
     left: 0;
-    top: 20%;
+    top: 15%;
     justify-content: center;
 }

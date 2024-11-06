@@ -138,10 +138,10 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 <link rel="icon" href="/favicon.ico"/>
                 <meta name="description" content={description}/>
                 <meta name="og:title" content={title}/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <meta name="viewport" content="width=device-width, user-scalable=0, interactive-widget=overlays-content, initial-scale=1"/>
             </Head>
             {
-                showSplash ? <SplashScreen /> :
+                showSplash ? <SplashScreen/> :
                     isLogin ?
                             <>
                                 <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>

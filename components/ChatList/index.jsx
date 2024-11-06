@@ -7,7 +7,6 @@ import gsap from "gsap";
 import { Flip } from "gsap/Flip";
 import { useGSAP } from "@gsap/react";
 import AiReplyComponent from "../AiReply";
-import styles from './ChatList.module.css';
 
 gsap.registerPlugin(Flip);
 

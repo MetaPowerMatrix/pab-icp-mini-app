@@ -4,6 +4,7 @@
 .header_panel_mobile_info{
     height: 500px;
     overflow: scroll;
+    min-width: 410px;
     /*background-image: linear-gradient(to bottom, #fff, #eee);*/
 }
 .header_user{
