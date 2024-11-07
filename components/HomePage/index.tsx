@@ -6,7 +6,7 @@ import {
 	HeartOutlined,
 	MenuUnfoldOutlined,
 	MoreOutlined,
-	NotificationOutlined,
+	NotificationOutlined, PlusOutlined,
 	SearchOutlined,
 	UserOutlined
 } from "@ant-design/icons";
@@ -75,7 +75,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 				</div>
 				<div style={{display: "flex"}}>
 					<div className={styles.search}><SearchOutlined/></div>
-					<div className={styles.notification}><UserOutlined/></div>
+					<div className={styles.notification}><PlusOutlined/></div>
 				</div>
 				</div>
 
@@ -130,7 +130,8 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 					closable={false}
 					onClose={onClose}
 					open={open}
-					width={200}
+					width={220}
+					height={680}
 					style={{backgroundColor: "black"}}
 					key="left"
 					className={styles.drawer}

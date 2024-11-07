@@ -1,4 +1,4 @@
-import {Button, Card, Col, Descriptions, Divider, Flex, Modal, Popover, Row, Timeline} from "antd";
+import {Button, Card, Col, Divider, Popover, Row} from "antd";
 import utilStyles from "@/styles/utils.module.css";
 import {
 	EditOutlined,
@@ -11,7 +11,6 @@ import commandDataContainer from "@/container/command";
 import {useTranslations} from "next-intl";
 import {KolInfo, PatoInfo} from "@/common";
 import styles from './HeaderPanelMobile.module.css'
-import SubscriptionsComponent from "@/components/Subscriptions";
 import QRCodeComponent from "@/components/QRCode";
 import Meta from "antd/es/card/Meta";
 import TagsComponent from "@/components/tags";
