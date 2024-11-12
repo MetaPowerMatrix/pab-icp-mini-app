@@ -3,11 +3,9 @@ import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {
     AudioOutlined,
-    FileImageOutlined,
     PauseOutlined,
     SendOutlined,
-    TagsOutlined, TeamOutlined,
-    UserOutlined
+    TagsOutlined, TeamOutlined
 } from "@ant-design/icons";
 import {Col, Modal, Popover, Row} from "antd";
 import {useTranslations} from "next-intl";

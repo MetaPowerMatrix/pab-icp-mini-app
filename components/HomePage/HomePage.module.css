@@ -152,3 +152,11 @@
 .drawer h3 {
     color: white;
 }
+
+.prompt_input {
+    width: 90%;
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    border: solid 1px black;
+}

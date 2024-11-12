@@ -3,7 +3,6 @@ import styles from './layout_mobile.module.css';
 import {Tabs} from "antd";
 import {
     UserOutlined,
-    ShopOutlined,
     CommentOutlined, HomeOutlined,
 } from "@ant-design/icons";
 import React, {useEffect, useState} from 'react';
@@ -114,7 +113,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
         return(
             <>
                 {key === 'home' &&
-                    <HomePage activeId={activeId}/>
+                    <HomePage ctrlVoiceStart={stop_record} query={query} activeId={activeId}/>
                 }
                 {key === 'chat' &&
                     <MobileFramework ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>

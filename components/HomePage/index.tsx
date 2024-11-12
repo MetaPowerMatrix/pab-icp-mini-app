@@ -2,31 +2,36 @@ import React, {useEffect, useRef, useState} from 'react';
 import { gsap } from 'gsap';
 import styles from './HomePage.module.css';
 import {
-	FireOutlined,
+	AudioOutlined,
 	HeartOutlined,
-	MenuUnfoldOutlined,
-	MoreOutlined,
-	NotificationOutlined, PlusOutlined,
-	SearchOutlined,
-	UserOutlined
+	MenuUnfoldOutlined, PauseOutlined,
+	PlusOutlined,
+	SearchOutlined, SendOutlined,
 } from "@ant-design/icons";
-import ChangingColorText from "@/components/AniBanner";
 import {useGSAP} from "@gsap/react";
 import {PatoInfo} from "@/common";
 import commandDataContainer from "@/container/command";
 import {Drawer} from "antd";
+import SlidePanel from "@/components/SlidePanel";
+import AIChat from "@/components/AIChat";
 
 // Define types for ref elements
 interface HomePageProps {
 	activeId: string;
+	query: string;
+	ctrlVoiceStart: (startStop: boolean)=>void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({activeId}) => {
+const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) => {
 	const upgradeRef = useRef<HTMLDivElement>(null);
 	const trendingVideoRef = useRef<HTMLDivElement>(null);
+	const [openPanel, setOpenPanel] = useState<boolean>(false)
 	const [avatar, setAvatar] = useState('/images/notlogin.png')
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const [open, setOpen] = useState(false);
+	const [stopped, setStopped] = useState<boolean>(true);
+	const [queryText, setQueryText] = useState<string>(query)
+	const [answerText, setAnswerText] = useState<string>()
 	const command = commandDataContainer.useContainer()
 	const images = [
 		{ id: 1, url: 'images/ad-1.webp', title: '鸢尾花' },
@@ -49,6 +54,28 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 			}
 		})
 	},[activeId]);
+
+	useEffect(() => {
+		setQueryText(query)
+	}, [query])
+
+	const stop_record = () => {
+		if (stopped){
+			setStopped(false)
+			ctrlVoiceStart(true)
+		}else{
+			setStopped(true)
+			ctrlVoiceStart(false)
+		}
+	}
+	const inputQuestion = (event: React.ChangeEvent<HTMLTextAreaElement>) =>{
+		setQueryText(event.target.value)
+	}
+	const process_chat_message = (event: any) => {
+		if (event.data.toString() !== 'pong') {
+			setAnswerText(event.data.toString())
+		}
+	}
 
 	useGSAP(() => {
 		// Animate elements when the page loads using GSAP
@@ -75,7 +102,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 				</div>
 				<div style={{display: "flex"}}>
 					<div className={styles.search}><SearchOutlined/></div>
-					<div className={styles.notification}><PlusOutlined/></div>
+					<div className={styles.notification}><PlusOutlined onClick={()=>setOpenPanel(true)}/></div>
 				</div>
 				</div>
 
@@ -106,7 +133,6 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 							</div>
 						</div>
 					</div>
-					{/* Trending Video Section */}
 					<div>
 						{
 							[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
@@ -136,11 +162,30 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 					key="left"
 					className={styles.drawer}
 				>
-					<h3>首页</h3>
-					<h3>聊天</h3>
-					<h3>我的</h3>
+					<h3>搜索</h3>
+					<h3>会员</h3>
+					<h3>客服</h3>
 				</Drawer>
-			</div>
-	)};
+			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
+				<textarea value={queryText} placeholder="那么，说说你的想法..." rows={4}
+				          className={styles.prompt_input}
+				          onChange={inputQuestion}
+				/>
+				<p>
+					{stopped ?
+						<AudioOutlined style={{color: "black", fontSize: 24}} onClick={() => stop_record()}/>
+						:
+						<PauseOutlined style={{color: "black", fontSize: 24}}
+						               onClick={() => stop_record()}/>
+					}
+					<SendOutlined style={{color: "black", fontSize: 24, marginLeft: 40}}
+					              onClick={() => setQueryText(queryText)}/>
+				</p>
+				{/*<AIChat activeId={activeId} process_ws_message={process_chat_message} question={queryText}/>*/}
+				<textarea value={answerText} placeholder="AI: " rows={4} readOnly={true} className={styles.prompt_input}/>
+			</SlidePanel>
+		</div>
+	)
+};
 
-	export default HomePage;
+export default HomePage;

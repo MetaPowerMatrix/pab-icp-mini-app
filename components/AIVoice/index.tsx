@@ -97,12 +97,6 @@ const AIVoice = ({activeId, process_ws_message, startStop}:{ activeId:string, pr
 		}
 	};
 
-	// const process_ws_message = (event: any) => {
-	// 	if (event.data.toString() !== 'pong') {
-	// 		setQuery(event.data.toString())
-	// 	}
-	// }
-
 	let chunks: BlobPart[] = [];
 	const handleAudioStream = (stream: MediaStream) => {
 		let options = {mimeType: 'audio/webm;codecs=pcm'};

@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import styles from './SlidePanel.module.css';
-import {CloseCircleOutlined, CloseOutlined} from "@ant-design/icons";
-import QRCodeComponent from "../QRCode"; // For basic styling
+import {CloseOutlined} from "@ant-design/icons";
+// For basic styling
 
 const SlidingPanel = ({children, isOpen, onClose, activeId}) => {
     const panelRef = useRef(null);
