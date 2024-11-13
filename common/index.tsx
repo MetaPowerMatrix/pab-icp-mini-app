@@ -5,7 +5,7 @@ export const ticketRecipientAddress = '0x5C98D79e6Ce7299a2Ea84B2898eAF064038AA1f
 export const host = "icp.metapowermatrix.ai"
 export const Web_Server = "https://"+ host
 export const Streaming_Server = "wss://ws.metapowermatrix.ai"
-export const llm_Server = "wss://llm.metapowermatrix.ai"
+export const llm_Server = "ws://wschat.metapowermatrix.ai"
 export const getApiServer = (port: number) => {
   // return Web_Server + ':' + port
   return Web_Server

@@ -6,12 +6,12 @@ import {
 	HeartOutlined,
 	MenuUnfoldOutlined, PauseOutlined,
 	PlusOutlined,
-	SearchOutlined, SendOutlined,
+	SearchOutlined, SendOutlined, UnorderedListOutlined,
 } from "@ant-design/icons";
 import {useGSAP} from "@gsap/react";
 import {PatoInfo} from "@/common";
 import commandDataContainer from "@/container/command";
-import {Drawer} from "antd";
+import {Col, Drawer, List, Row} from "antd";
 import SlidePanel from "@/components/SlidePanel";
 import AIChat from "@/components/AIChat";
 
@@ -20,6 +20,11 @@ interface HomePageProps {
 	activeId: string;
 	query: string;
 	ctrlVoiceStart: (startStop: boolean)=>void;
+}
+interface ChatMessage {
+	sender: string,
+	content: string
+	type: string
 }
 
 const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) => {
@@ -31,7 +36,8 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 	const [open, setOpen] = useState(false);
 	const [stopped, setStopped] = useState<boolean>(true);
 	const [queryText, setQueryText] = useState<string>(query)
-	const [answerText, setAnswerText] = useState<string>()
+	const [sendQuery, setSendQuery] = useState<string>('')
+	const [messages, setMessages] = useState<ChatMessage[]>([])
 	const command = commandDataContainer.useContainer()
 	const images = [
 		{ id: 1, url: 'images/ad-1.webp', title: '鸢尾花' },
@@ -72,8 +78,21 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 		setQueryText(event.target.value)
 	}
 	const process_chat_message = (event: any) => {
-		if (event.data.toString() !== 'pong') {
-			setAnswerText(event.data.toString())
+		if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误'){
+			// console.log(event.data.toString())
+			let resp: [] = JSON.parse(event.data.toString())
+			let msgs: ChatMessage[] = []
+			resp.forEach((message: any) => {
+				if (message['role'] === "assistant" && message['content'] !== null){
+					let msg: ChatMessage = {
+						sender: message['sender'],
+						content: message['content'],
+						type:'text'
+					}
+					msgs.push(msg)
+				}
+			})
+			setMessages([...messages, ...msgs])
 		}
 	}
 
@@ -167,22 +186,42 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 					<h3>客服</h3>
 				</Drawer>
 			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
-				<textarea value={queryText} placeholder="那么，说说你的想法..." rows={4}
-				          className={styles.prompt_input}
-				          onChange={inputQuestion}
-				/>
-				<p>
-					{stopped ?
-						<AudioOutlined style={{color: "black", fontSize: 24}} onClick={() => stop_record()}/>
-						:
-						<PauseOutlined style={{color: "black", fontSize: 24}}
-						               onClick={() => stop_record()}/>
-					}
-					<SendOutlined style={{color: "black", fontSize: 24, marginLeft: 40}}
-					              onClick={() => setQueryText(queryText)}/>
-				</p>
-				{/*<AIChat activeId={activeId} process_ws_message={process_chat_message} question={queryText}/>*/}
-				<textarea value={answerText} placeholder="AI: " rows={4} readOnly={true} className={styles.prompt_input}/>
+				<Row align={"middle"} style={{width:"100%"}}>
+					<Col span={22}>
+						<textarea value={queryText} placeholder="那么，说说你的想法..." rows={2}
+						          className={styles.prompt_input}
+						          onChange={inputQuestion}
+						/>
+					</Col>
+					<Col span={1} style={{paddingTop: 10}}>
+						<div>
+							{stopped ?
+								<AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
+								:
+								<PauseOutlined style={{color: "black", fontSize: 14}}
+								               onClick={() => stop_record()}/>
+							}
+						</div>
+						<div>
+							<SendOutlined style={{color: "black", fontSize: 14}}
+							              onClick={() => setSendQuery(queryText)}/>
+						</div>
+					</Col>
+				</Row>
+				<AIChat activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
+				<div style={{height: 370, marginTop:10, overflow: "scroll"}}>
+					<List
+						itemLayout="vertical"
+						size="small"
+						dataSource={messages}
+						renderItem={(item, index) => (
+							<List.Item key={index}>
+								<h4>{item.sender}: </h4>
+								<h5>{item.content}</h5>
+							</List.Item>
+						)}
+					/>
+				</div>
 			</SlidePanel>
 		</div>
 	)

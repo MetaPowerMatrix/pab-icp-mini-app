@@ -13,7 +13,7 @@ const AIChat = ({activeId, process_ws_message, question}:{ activeId:string, proc
 	const [wsSocket, setWsSocket] = useState<WebSocketManager>();
 
 	useEffect(() => {
-		const socket = new WebSocketManager(llm_Server + "/json", process_ws_message);
+		const socket = new WebSocketManager(llm_Server + "/topic", process_ws_message);
 		setWsSocket(socket)
 
 		return () => {
@@ -24,10 +24,11 @@ const AIChat = ({activeId, process_ws_message, question}:{ activeId:string, proc
 	},[])
 
 	useEffect(() => {
-		let message: aiChatMessage = {
-			role: activeId,
-			content: question
-		}
+		// let message: aiChatMessage = {
+		// 	role: activeId,
+		// 	content: question
+		// }
+		let message = question
 		wsSocket?.send(JSON.stringify(message))
 	},[question])
 
