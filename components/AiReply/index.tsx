@@ -3,8 +3,9 @@ import {Card, Divider} from "antd";
 import Meta from "antd/es/card/Meta";
 import {MessageCategory} from "@/common";
 import styles from "./AiReplyComponent.module.css";
+import Link from "next/link";
 
-const CardReply = ({imageUrl, message}:{message: string, imageUrl: string}) => {
+const CardReply = ({imageUrl, message, link}:{message: string, imageUrl: string, link: string}) => {
 	return (
 		<>
 			<Card bodyStyle={{padding: 5}}  className="card_message"
@@ -13,8 +14,7 @@ const CardReply = ({imageUrl, message}:{message: string, imageUrl: string}) => {
 			>
 				<Meta style={{fontSize: 12}} description={message}/>
 				<div className={styles.card_message_button_container}>
-					<button className={styles.card_message_button}>推荐</button>
-					<button className={styles.card_message_button}>购买</button>
+					<button className={styles.card_message_button}><Link href={link}>{'详情>'}</Link> </button>
 				</div>
 			</Card>
 		</>
@@ -29,11 +29,11 @@ const HumanQuestion = ({message}: { message: string }) => {
 }
 
 
-const AiReplyComponent = ({category, imageUrl, message}:{category: MessageCategory, message: string, imageUrl: string}) => {
+const AiReplyComponent = ({category, imageUrl, message, link}:{category: MessageCategory, message: string, imageUrl: string, link: string}) => {
 	return (
 		<>
 			{
-				category === MessageCategory.Card && <CardReply imageUrl={imageUrl} message={message}/>
+				category === MessageCategory.Card && <CardReply link={link} imageUrl={imageUrl} message={message}/>
 			}
 			{
 				category === MessageCategory.Human && <HumanQuestion message={message}/>

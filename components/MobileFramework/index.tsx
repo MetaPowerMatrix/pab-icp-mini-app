@@ -9,11 +9,19 @@ import {
 } from "@ant-design/icons";
 import {Col, Modal, Popover, Row} from "antd";
 import commandDataContainer from "../../container/command";
-import {ChatMessage, PortalHotAi} from "@/common";
+import {ChatMessage, MessageCategory, PortalHotAi} from "@/common";
 import TagsComponent from "@/components/tags";
 import ChatListComponet from "@/components/ChatList";
 import AIChat from "@/components/AIChat";
 
+interface AIReply {
+    sender: string,
+    message: string,
+    imageUrl: string,
+    link: string,
+    category: MessageCategory,
+    status: string
+}
 const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
 
 const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, activeId: string, query: string, ctrlVoiceStart: (startStop: boolean)=>void}) => {
@@ -28,7 +36,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const [patos, setPatos] = useState<string[]>([])
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
-    const [messages, setMessages] = useState<ChatMessage[]>([])
+    const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
@@ -76,23 +84,32 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
             let msgs: ChatMessage[] = []
             resp.forEach((message: any) => {
                 if (message['role'] === "user"){
-                    let msg: ChatMessage = {
+                    let reply: AIReply = {
                         sender: '我',
-                        content: message['content'],
-                        type:'text'
+                        message: message['content'],
+                        imageUrl: '',
+                        link: '',
+                        category: MessageCategory.Human,
+                        status: "enter"
                     }
-                    msgs.push(msg)
+                    setAiReplies((aiReplies) => [...aiReplies, reply])
+                    // @ts-ignore
+                    listRef.current?.addItem(reply)
                 }
                 if (message['role'] === "assistant" && message['content'] !== null){
-                    let msg: ChatMessage = {
+                    let reply: AIReply = {
                         sender: message['sender'],
-                        content: message['content'],
-                        type:'text'
+                        message: message['content'],
+                        imageUrl: '',
+                        link: '',
+                        category: MessageCategory.Card,
+                        status: "enter"
                     }
-                    msgs.push(msg)
+                    setAiReplies((aiReplies) => [...aiReplies, reply])
+                    // @ts-ignore
+                    listRef.current?.addItem(reply)
                 }
             })
-            setMessages([...messages, ...msgs])
         }
     }
 
