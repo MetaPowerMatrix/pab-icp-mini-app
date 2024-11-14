@@ -11,7 +11,7 @@ import {
 import {useGSAP} from "@gsap/react";
 import {PatoInfo} from "@/common";
 import commandDataContainer from "@/container/command";
-import {Col, Drawer, List, Row} from "antd";
+import {Avatar, Col, Drawer, List, Row} from "antd";
 import SlidePanel from "@/components/SlidePanel";
 import AIChat from "@/components/AIChat";
 
@@ -216,8 +216,12 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 						dataSource={messages}
 						renderItem={(item, index) => (
 							<List.Item key={index}>
-								<h4>{item.sender}: </h4>
-								<h5>{item.content}</h5>
+								<List.Item.Meta
+									avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
+									title={<a href="https://ant.design">{item.sender}</a>}
+									description="#assistan"
+								/>
+								{item.content}
 							</List.Item>
 						)}
 					/>
