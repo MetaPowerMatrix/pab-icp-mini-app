@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {WebSocketManager} from "@/lib/WebsocketManager";
-import {aiChatMessage, llm_Server} from "@/common";
+import {llm_Server} from "@/common";
 
 declare global {
 	interface Window {
@@ -9,11 +9,12 @@ declare global {
 	}
 }
 
-const AIChat = ({activeId, process_ws_message, question}:{ activeId:string, process_ws_message:(event: any)=>void, question:string }) => {
+const AIChat = ({activeId, process_ws_message, question, uri}
+	                : { activeId:string, process_ws_message:(event: any)=>void, question:string, uri: string }) => {
 	const [wsSocket, setWsSocket] = useState<WebSocketManager>();
 
 	useEffect(() => {
-		const socket = new WebSocketManager(llm_Server + "/topic", process_ws_message);
+		const socket = new WebSocketManager(llm_Server + uri, process_ws_message);
 		setWsSocket(socket)
 
 		return () => {

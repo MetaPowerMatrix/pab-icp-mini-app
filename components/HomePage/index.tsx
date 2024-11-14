@@ -203,7 +203,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 						</div>
 					</Col>
 				</Row>
-				<AIChat activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
+				<AIChat uri={"/topic"} activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
 				<div style={{height: 370, marginTop:10, overflow: "scroll"}}>
 					<List
 						itemLayout="vertical"

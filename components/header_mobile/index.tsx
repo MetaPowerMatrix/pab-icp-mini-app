@@ -17,20 +17,6 @@ import TagsComponent from "@/components/tags";
 import SlidePanel from "@/components/SlidePanel";
 import KOLListComponent from "@/components/KOL";
 
-const pad = function(src: Number, size: number) {
-	let s = String(src);
-	while (s.length < (size || 2)) {s = "0" + s;}
-	return s;
-};
-const copyToClipboard = async (text: string) => {
-	try {
-		await navigator.clipboard.writeText(text);
-		console.log('Text copied to clipboard');
-	} catch (err) {
-		console.error('Failed to copy text to clipboard: ', err);
-	}
-};
-
 const awardHead = ()=>{
 	return(
 		<>

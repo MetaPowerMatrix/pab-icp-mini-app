@@ -171,7 +171,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
           <div className={styles.chatlist_container}>
               <ChatListComponet ref={listRef} />
           </div>
-          <AIChat activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
+          <AIChat uri={"/sales"} activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
       </>
     );
 };
