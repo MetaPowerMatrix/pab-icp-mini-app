@@ -11,13 +11,13 @@ import {useTranslations} from 'next-intl';
 import ProgressBarComponent from "@/components/ProgressBar";
 import HeaderPanelMobile from "./header_mobile";
 import TownMobile from "@/components/town";
-import commandDataContainer from "@/container/command";
 import AIVoice from "@/components/AIVoice";
 import MobileFramework from "@/components/MobileFramework";
 import SplashScreen from "@/components/SplashScreen";
 import HomePage from "@/components/HomePage";
+import DetailPage from "@/components/DetailPage";
 
-export default function LayoutMobile({children, title, description, onChangeId, onRefresh }) {
+export default function LayoutMobile({children, title, description, onChangeId, onRefresh, showTabs }) {
     const [availableIds, setAvailableIds] = useState([]);
     const [isLogin, setIsLogin] = useState(false);
     const [activeId, setActiveId] = useState("");
@@ -27,9 +27,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const [query, setQuery] = useState("");
     const [start, setStart] = useState(false);
     const [showSplash, setShowSplash] = useState(true);
-
     const t = useTranslations('Login');
-    const command = commandDataContainer.useContainer()
 
     const showProgressBar = (show) => {
         setLoading(show)
@@ -144,26 +142,30 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                     isLogin ?
                             <>
                                 <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
-                                <Tabs
-                                    destroyInactiveTabPane={true}
-                                    tabBarGutter={80}
-                                    tabBarStyle={{backgroundColor: 'black', marginTop: 0}}
-                                    centered
-                                    size={"small"}
-                                    type={"line"}
-                                    animated={true}
-                                    tabPosition="bottom"
-                                    activeKey={activeTab}
-                                    onChange={(key)=>setActivTab(key)}
-                                    items={tabs.map((tab) => {
-                                        return {
-                                            label: tab.label,
-                                            key: tab.key,
-                                            children: content(tab.key),
-                                            icon:tab.icon
-                                        };
-                                    })}
-                                />
+                                {showTabs ?
+                                    <Tabs
+                                        destroyInactiveTabPane={true}
+                                        tabBarGutter={80}
+                                        tabBarStyle={{backgroundColor: 'black', marginTop: 0}}
+                                        centered
+                                        size={"small"}
+                                        type={"line"}
+                                        animated={true}
+                                        tabPosition="bottom"
+                                        activeKey={activeTab}
+                                        onChange={(key)=>setActivTab(key)}
+                                        items={tabs.map((tab) => {
+                                            return {
+                                                label: tab.label,
+                                                key: tab.key,
+                                                children: content(tab.key),
+                                                icon:tab.icon
+                                            };
+                                        })}
+                                    />
+                                    :
+                                    <DetailPage ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
+                                }
                             </>
                             :
                             null

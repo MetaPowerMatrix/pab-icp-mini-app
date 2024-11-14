@@ -7,7 +7,6 @@ import {
   KolToken,
   PatoInfo,
   PortalHotAi,
-  PortalKnowledge,
 } from '@/common'
 
 const useCommand = () => {

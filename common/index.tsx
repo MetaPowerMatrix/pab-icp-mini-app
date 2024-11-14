@@ -19,10 +19,6 @@ export interface ChatMessage {
   content: string
   type: string
 }
-export interface aiChatMessage{
-  role: string,
-  content: string
-}
 export interface KolToken{
   id: string,
   name:string,
@@ -33,17 +29,18 @@ export interface HotPro{
   name: string,
   subjects: string[]
 }
+export interface TopicInfo{
+  id: string,
+  title: string,
+  tags: string[],
+  cover: string,
+  author: string
+}
 export interface PortalHotAi{
   id: string,
   name: string,
   talks: number,
   pros: string,
-}
-export interface PortalKnowledge{
-  sig: string,
-  title: string,
-  owner: string,
-  summary: string,
 }
 export interface KolInfo{
   id: string,
@@ -60,20 +57,6 @@ export interface PatoInfo {
   tags: string[],
   avatar: string,
   cover: string,
-}
-export interface NodeInfo{
-  name: string;
-  id: string;
-  ip: string
-}
-export interface Persona {
-  name: string,
-  age: number,
-  innate: string,
-  learned: string,
-  currently: string,
-  lifestyle: string,
-  daily_plan_req: string,
 }
 export enum MessageCategory {
   Human = "human",

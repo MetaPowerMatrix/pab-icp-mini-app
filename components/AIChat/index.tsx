@@ -10,7 +10,7 @@ declare global {
 }
 
 const AIChat = ({activeId, process_ws_message, question, uri}
-	                : { activeId:string, process_ws_message:(event: any)=>void, question:string, uri: string }) => {
+	                : { activeId:string, process_ws_message:(event: any)=>void, question: any, uri: string }) => {
 	const [wsSocket, setWsSocket] = useState<WebSocketManager>();
 
 	useEffect(() => {

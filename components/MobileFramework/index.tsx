@@ -13,6 +13,7 @@ import {ChatMessage, MessageCategory, PortalHotAi} from "@/common";
 import TagsComponent from "@/components/tags";
 import ChatListComponet from "@/components/ChatList";
 import AIChat from "@/components/AIChat";
+import ms from "ms";
 
 interface AIReply {
     sender: string,
@@ -30,7 +31,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const promptInputRef = useRef(null);
     const [stopped, setStopped] = useState<boolean>(true);
     const [queryText, setQueryText] = useState<string>(query)
-    const [sendQuery, setSendQuery] = useState<string>('')
+    const [sendQuery, setSendQuery] = useState<any>('')
     const [openPop, setOpenPop] = useState<boolean>(false)
     const [openTeam, setOpenTeam] = useState<boolean>(false)
     const [patos, setPatos] = useState<string[]>([])
@@ -77,11 +78,17 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
         setOpenTeam(newOpen);
     };
 
+    const sendMessageToAI = () => {
+        let question = {
+            input: queryText,
+            customer_info: 'luca， 男， 技术宅',
+        }
+        setSendQuery(question)
+    }
     const process_chat_message = (event: any) => {
         if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误'){
             // console.log(event.data.toString())
             let resp: [] = JSON.parse(event.data.toString())
-            let msgs: ChatMessage[] = []
             resp.forEach((message: any) => {
                 if (message['role'] === "user"){
                     let reply: AIReply = {
@@ -179,7 +186,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                           </Col>
                           <Col span={2}>
                               <SendOutlined style={{color: "black", fontSize: 14, marginLeft: 10}}
-                                            onClick={() => setSendQuery(queryText)}/>
+                                            onClick={sendMessageToAI}/>
                           </Col>
                       </Row>
                   </div>

@@ -1,5 +1,5 @@
 import {createContainer} from "unstated-next"
-import {api_url, NodeInfo} from "@/common";
+import {api_url} from "@/common";
 
 const useManage = () => {
   const user_login = async (username: string, password: string) => {
