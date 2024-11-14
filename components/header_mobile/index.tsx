@@ -20,8 +20,8 @@ import KOLListComponent from "@/components/KOL";
 const awardHead = ()=>{
 	return(
 		<>
-			<GoldFilled style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
-			<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>我的勋章</span>
+			<GoldFilled style={{fontWeight: "bold", color: "white", fontSize: 14}}/>
+			<span style={{marginLeft: 5, fontWeight: "bold", color: "white", fontSize: 12}}>我的勋章</span>
 		</>
 	)
 }
@@ -29,8 +29,8 @@ const awardHead = ()=>{
 const relationshipHead = (title: string)=>{
 	return(
 		<>
-			<ShareAltOutlined style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
-			<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>{title}</span>
+			<ShareAltOutlined style={{fontWeight: "bold", color: "white", fontSize: 14}}/>
+			<span style={{marginLeft: 5, fontWeight: "bold", color: "white", fontSize: 12}}>{title}</span>
 		</>
 	)
 }
@@ -103,10 +103,10 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 		<header className={styles.header_panel_mobile_container}>
 			<div className={styles.header_user} style={{
 				backgroundImage: cover ? `url(${cover})` : undefined,
-				backgroundSize: "cover",
+				backgroundSize: "contain",
 			}}
 			>
-					<Row style={cover ? {backgroundColor: "#00000080", padding: 10 } : {padding: 10}}>
+					<Row style={{backgroundColor: "#00000080", padding: 5}}>
 						<Col span={5} style={{textAlign: "center"}}>
 							<img
 								src={avatar}
@@ -133,19 +133,23 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 
 			<div className={styles.header_panel_mobile_info}>
 				<Card bodyStyle={{padding: 5}} style={{
-					minWidth: 400,
-					marginLeft: 15,
-					marginRight: 15,
-					top: 105,
+					minWidth: 390,
+					marginLeft: 20,
+					marginRight: 20,
+					top: 195,
 					zIndex: 3,
 					position: "absolute",
-					height: 555,
+					height: 470,
+					width: 370,
 					overflow: "scroll",
-					backgroundImage: "linear-gradient(to bottom, #eee, #fff)"
+					backgroundColor: "#212121",
+					opacity: "0.9",
+					border: 0
+					// backgroundImage: "linear-gradient(to bottom, #eee, #fff)"
 				}}>
 					<div>
-						<TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-						<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>我的标签</span>
+						<TagsOutlined style={{fontWeight: "bold", color: "white", fontSize: 14}}/>
+						<span style={{marginLeft: 5, fontWeight: "bold", color: "white", fontSize: 12}}>我的标签</span>
 
 						<Popover
 							placement={"bottom"}
@@ -160,10 +164,10 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 							open={openPop}
 							onOpenChange={handleOpenChange}
 						>
-							<EditOutlined style={{marginLeft: 20, color: "black", marginRight: 10}}/>
+							<EditOutlined style={{marginLeft: 20, color: "white", marginRight: 10}}/>
 						</Popover>
 
-						<UploadOutlined onClick={handleSubmitTags} style={{marginLeft: 10, color: "black", marginRight: 10}}/>
+						<UploadOutlined onClick={handleSubmitTags} style={{marginLeft: 10, color: "white", marginRight: 10}}/>
 					</div>
 					<div style={{padding: 20}}>
 						<TagsComponent presetTags={myTags} height={100} tags={myTags} myTags={(tags) => {
