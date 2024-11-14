@@ -91,7 +91,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				setIsKol(true)
 			}
 		})
-		command.query_kol_rooms().then((res) =>{
+		command.getKolList().then((res) =>{
 			res.forEach((info) =>{
 				setKols(res)
 				if (info.id === activeId) {
