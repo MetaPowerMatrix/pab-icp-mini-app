@@ -6,8 +6,6 @@ import {
 	BankOutlined,
 	CommentOutlined, ExperimentOutlined,
 } from "@ant-design/icons";
-import SummaryComponent from "@/components/summary";
-import SharedKnowledges from "@/components/SharedKnowledges";
 
 const StudyTownCompoent = ({id, mobile, onShowProgress}:{id: string, mobile: boolean, onShowProgress: (s: boolean)=>void}) => {
 	const [activeTab, setActivTab] = useState('summary');
@@ -17,12 +15,6 @@ const StudyTownCompoent = ({id, mobile, onShowProgress}:{id: string, mobile: boo
 	const tabContent = (key: string) => {
 		return (
 			<>
-				{key === 'summary' &&
-          <SummaryComponent updateCounter={updateCounter} activeId={id} onShowProgress={onShowProgress}/>
-				}
-				{key === 'library' &&
-          <SharedKnowledges inTab={true} activeId={id} visible={true} canSelect={true} onClose={()=>{setUpdateCounter(updateCounter+1)}}/>
-				}
 			</>
 		)
 	}

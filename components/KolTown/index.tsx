@@ -1,14 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Col, Modal, Row, Button, Tabs} from "antd";
 import styles from "./KolTownComponent.module.css";
 import {KolInfo, recipientAddress} from "@/common";
-import {useTranslations} from "next-intl";
 import commandDataContainer from "@/container/command";
-import AIInstructMobileComponent from "@/components/AIInstructMobile";
 import BuyKolComponent from "@/components/BuyKol";
 import Waterfall from "@/components/Waterfall/react";
-import AniBannerComponent from "@/components/AniBanner";
-import BlinkingText from "@/components/AniBanner";
 import ChangingColorText from "@/components/AniBanner";
 
 const customStyleGrid = `#react-waterfall-grid-comps li>div {
@@ -94,18 +89,13 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 	const [reload, setReload] = useState<number>(0)
 	const [roomId, setRoomId] = useState<string>('')
 	const [showBuyKol, setShowBuyKol] = useState<boolean>(false)
-	const [showKolRoom, setShowKolRoom] = useState<boolean>(false)
 	const [buyWhat, setBuyWhat] = useState<string>('kol')
 	const [isKol, setIsKol] = useState<boolean>(false)
-	const [kolName, setKolName] = useState<string>('')
-	const [followerIds, setFollowerIds] = useState<string[]>([])
 	const [queryText, setQueryText] = useState<string>("")
-	const t = useTranslations('kol');
 	const command = commandDataContainer.useContainer()
-	const {confirm} = Modal;
 
 	useEffect(() => {
-		command.query_kol_rooms().then((res) => {
+		command.getKolList().then((res) => {
 			setRoomList(res)
 			let mine: KolInfo[] =  []
 			res.forEach((info) =>{
@@ -137,10 +127,6 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 						/>
 					</div>
 					<RoomList rooms={roomList} mine={false}/>
-					<AIInstructMobileComponent query={query} ctrlVoiceStart={ctrlVoiceStart} follower_ids={followerIds}
-					                           my_name={name} kol_name={kolName} id={activeId} room_id={roomId} visible={showKolRoom} onShowProgress={onShowProgress}
-                     onClose={()=>setShowKolRoom(false)}/>
-
 					<BuyKolComponent recipient={recipientAddress} id={activeId} room_id={roomId} buyWhat={buyWhat}
              onClose={()=> {
 							 setReload(reload + 1)

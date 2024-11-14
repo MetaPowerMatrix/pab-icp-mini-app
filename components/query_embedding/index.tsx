@@ -82,9 +82,9 @@ const QueryEmbeddingComponent = ({activeId, owner, visible, bookname, bookSig, o
 		}
 	}
 	const handleQueryEmbeddings = (sig: string, q: string) => {
-		command.query_embedding(owner, sig, q).then((res) => {
+		command.query_knowledges(owner).then((res) => {
 			console.log(res)
-			if (res !== undefined){
+			if (res !== null){
 				setQueryResult(res)
 			}
 		})

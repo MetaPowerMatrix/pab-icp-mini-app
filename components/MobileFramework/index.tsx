@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {
@@ -8,24 +8,12 @@ import {
     TagsOutlined, TeamOutlined
 } from "@ant-design/icons";
 import {Col, Modal, Popover, Row} from "antd";
-import {useTranslations} from "next-intl";
 import commandDataContainer from "../../container/command";
-import {api_url, getApiServer, MessageCategory} from "@/common";
+import {ChatMessage, PortalHotAi} from "@/common";
 import TagsComponent from "@/components/tags";
 import ChatListComponet from "@/components/ChatList";
+import AIChat from "@/components/AIChat";
 
-interface AIReply {
-    message: string,
-    imageUrl: string,
-    category: MessageCategory,
-    status: string
-}
-const defaultReply: AIReply = {
-    message: "...",
-    imageUrl: "...",
-    category: MessageCategory.Human,
-    status: "enter"
-}
 const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
 
 const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, activeId: string, query: string, ctrlVoiceStart: (startStop: boolean)=>void}) => {
@@ -34,14 +22,13 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const promptInputRef = useRef(null);
     const [stopped, setStopped] = useState<boolean>(true);
     const [queryText, setQueryText] = useState<string>(query)
+    const [sendQuery, setSendQuery] = useState<string>('')
     const [openPop, setOpenPop] = useState<boolean>(false)
     const [openTeam, setOpenTeam] = useState<boolean>(false)
     const [patos, setPatos] = useState<string[]>([])
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
-    const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
-    const t = useTranslations('AIInstruct');
-    const {confirm} = Modal;
+    const [messages, setMessages] = useState<ChatMessage[]>([])
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
@@ -70,48 +57,6 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
             ctrlVoiceStart(false)
         }
     }
-    const handleVoiceCommand = (topic: string, pro: string) => {
-        setQueryText("")
-        let reply: AIReply = {
-            message: topic,
-            imageUrl: topic,
-            category: MessageCategory.Human,
-            status: "enter"
-        }
-        setAiReplies((aiReplies) => [...aiReplies, reply])
-        // @ts-ignore
-        listRef.current?.addItem(reply)
-
-        const data = {id: activeId, message: topic, pro: pro};
-        let url = getApiServer(80) + api_url.portal.interaction.instruct
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.code !== "200") {
-                    alert(t('assist_fail'));
-                }else{
-                    let reply: AIReply = {
-                        message: data.content,
-                        imageUrl: data.content,
-                        category: MessageCategory.Card,
-                        status: "enter"
-                    }
-                    setAiReplies((aiReplies) => [...aiReplies, reply])
-                    // @ts-ignore
-                    listRef.current?.addItem(reply)
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert(t('assist_fail'));
-            });
-    };
     const inputQuestion = (event: React.ChangeEvent<HTMLTextAreaElement>) =>{
         setQueryText(event.target.value)
     }
@@ -124,13 +69,37 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
         setOpenTeam(newOpen);
     };
 
+    const process_chat_message = (event: any) => {
+        if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误'){
+            // console.log(event.data.toString())
+            let resp: [] = JSON.parse(event.data.toString())
+            let msgs: ChatMessage[] = []
+            resp.forEach((message: any) => {
+                if (message['role'] === "user"){
+                    let msg: ChatMessage = {
+                        sender: '我',
+                        content: message['content'],
+                        type:'text'
+                    }
+                    msgs.push(msg)
+                }
+                if (message['role'] === "assistant" && message['content'] !== null){
+                    let msg: ChatMessage = {
+                        sender: message['sender'],
+                        content: message['content'],
+                        type:'text'
+                    }
+                    msgs.push(msg)
+                }
+            })
+            setMessages([...messages, ...msgs])
+        }
+    }
+
     return (
       <>
           <div className={styles.content}>
-              <header className={styles.app_header} ref={headerRef}>
-                  {/*<h3>{name}</h3>*/}
-                  {/*<button className={styles.get_pro}>读书</button>*/}
-              </header>
+              <header className={styles.app_header} ref={headerRef}/>
 
               <div className={styles.input_section}>
                     <textarea value={queryText} placeholder="emm，我们聊些什么呢..." rows={4} ref={promptInputRef}
@@ -193,7 +162,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                           </Col>
                           <Col span={2}>
                               <SendOutlined style={{color: "black", fontSize: 14, marginLeft: 10}}
-                                            onClick={() => handleVoiceCommand(queryText, activeId)}/>
+                                            onClick={() => setSendQuery(queryText)}/>
                           </Col>
                       </Row>
                   </div>
@@ -202,6 +171,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
           <div className={styles.chatlist_container}>
               <ChatListComponet ref={listRef} />
           </div>
+          <AIChat activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
       </>
     );
 };

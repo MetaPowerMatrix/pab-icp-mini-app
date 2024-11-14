@@ -9,7 +9,7 @@ import {
 	SearchOutlined, SendOutlined, UnorderedListOutlined,
 } from "@ant-design/icons";
 import {useGSAP} from "@gsap/react";
-import {PatoInfo} from "@/common";
+import {ChatMessage, PatoInfo} from "@/common";
 import commandDataContainer from "@/container/command";
 import {Avatar, Col, Drawer, List, Row} from "antd";
 import SlidePanel from "@/components/SlidePanel";
@@ -20,11 +20,6 @@ interface HomePageProps {
 	activeId: string;
 	query: string;
 	ctrlVoiceStart: (startStop: boolean)=>void;
-}
-interface ChatMessage {
-	sender: string,
-	content: string
-	type: string
 }
 
 const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) => {
