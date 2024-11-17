@@ -1,6 +1,7 @@
 .modal {
     z-index: 3;
-    max-width: 410px;
+    width: 100%;
+    max-width: 440px;
     height: 680px;
     overflow: hidden;
 }

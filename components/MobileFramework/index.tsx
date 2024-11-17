@@ -199,15 +199,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                     />
                   <div className={styles.style_options}>
                       <Row align="middle">
-                          <Col span={2}>
-                              {stopped ?
-                                <AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
-                                :
-                                <PauseOutlined style={{color: "black", fontSize: 14, marginRight: 10}}
-                                               onClick={() => stop_record()}/>
-                              }
-                          </Col>
-                          <Col span={2}>
+                          <Col span={1}>
                               <Popover
                                 placement={"bottomLeft"}
                                 content={
@@ -250,6 +242,14 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                       })
                                   }
                               </Popover>
+                          </Col>
+                          <Col span={2}>
+                              {stopped ?
+                                <AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
+                                :
+                                <PauseOutlined style={{color: "black", fontSize: 14, marginRight: 10}}
+                                               onClick={() => stop_record()}/>
+                              }
                           </Col>
                           <Col span={2}>
                               <FileImageOutlined onClick={(e)=>{
