@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {
     AudioOutlined, FileImageOutlined,
-    PauseOutlined, PlusOutlined,
+    PauseOutlined, PlusOutlined, SaveOutlined,
     SendOutlined,
     TagsOutlined, TeamOutlined, UploadOutlined
 } from "@ant-design/icons";
@@ -13,6 +13,7 @@ import {api_url, ChatMessage, getApiServer, MessageCategory, PortalHotAi} from "
 import TagsComponent from "@/components/tags";
 import ChatListComponet from "@/components/ChatList";
 import AIChat from "@/components/AIChat";
+import { v4 as uuidv4 } from 'uuid';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -41,6 +42,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const [uploaded, setUploaded] = useState<boolean>(false)
     const [imageUploaded, setImageUploaded] = useState<boolean>(false)
     const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
+    const [session, setSession] = useState<string>(uuidv4())
     const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
     const [reply, setReply] = useState<AIReply>();
     const command = commandDataContainer.useContainer()
@@ -137,6 +139,13 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
         },
         fileList,
     };
+    const saveMessageToIcp = () => {
+        command.archive_session(activeId, session, JSON.stringify(aiReplies)).then(()=>{
+            Modal.success({
+                content: '对话已保存'
+            })
+        })
+    }
     const sendMessageToAI = () => {
         if (fileList.length > 0){
             if (imageUploaded){
@@ -199,6 +208,10 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                     />
                   <div className={styles.style_options}>
                       <Row align="middle">
+                          <Col span={2}>
+                              <SaveOutlined style={{color: "black", fontSize: 14}}
+                                            onClick={saveMessageToIcp}/>
+                          </Col>
                           <Col span={1}>
                               <Popover
                                 placement={"bottomLeft"}
@@ -217,7 +230,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                   <TeamOutlined style={{color: "black", fontSize: 14}}/>
                               </Popover>
                           </Col>
-                          <Col span={14}>
+                          <Col span={12}>
                               <Popover
                                 placement={"bottomLeft"}
                                 content={
