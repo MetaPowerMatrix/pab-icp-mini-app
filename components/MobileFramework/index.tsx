@@ -2,18 +2,19 @@ import React, {useEffect, useRef, useState} from 'react';
 import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {
-    AudioOutlined,
-    PauseOutlined,
+    AudioOutlined, FileImageOutlined,
+    PauseOutlined, PlusOutlined,
     SendOutlined,
-    TagsOutlined, TeamOutlined
+    TagsOutlined, TeamOutlined, UploadOutlined
 } from "@ant-design/icons";
-import {Col, Modal, Popover, Row} from "antd";
+import {Button, Col, GetProp, Modal, Popover, Row, Upload, UploadFile, UploadProps} from "antd";
 import commandDataContainer from "../../container/command";
-import {ChatMessage, MessageCategory, PortalHotAi} from "@/common";
+import {api_url, ChatMessage, getApiServer, MessageCategory, PortalHotAi} from "@/common";
 import TagsComponent from "@/components/tags";
 import ChatListComponet from "@/components/ChatList";
 import AIChat from "@/components/AIChat";
-import ms from "ms";
+
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 interface AIReply {
     sender: string,
@@ -36,8 +37,12 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const [openTeam, setOpenTeam] = useState<boolean>(false)
     const [patos, setPatos] = useState<string[]>([])
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [uploaded, setUploaded] = useState<boolean>(false)
+    const [imageUploaded, setImageUploaded] = useState<boolean>(false)
     const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
     const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
+    const [reply, setReply] = useState<AIReply>();
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
@@ -56,6 +61,11 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     useEffect(() => {
         setQueryText(query)
     }, [query])
+
+    useEffect(() => {
+        // @ts-ignore
+        listRef.current?.addItem(reply)
+    },[reply])
 
     const stop_record = () => {
         if (stopped){
@@ -77,13 +87,70 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const handleOpenTeamChange = (newOpen: boolean) => {
         setOpenTeam(newOpen);
     };
-
-    const sendMessageToAI = () => {
-        let question = {
-            input: queryText,
-            customer_info: 'luca， 男， 技术宅',
+    const handleKnowledge= (uri: string) => {
+        const formData = new FormData();
+        if (fileList.length > 0){
+            formData.append('file', fileList[0] as FileType);
         }
-        setSendQuery(question)
+        formData.append('message', activeId);
+
+        let url = getApiServer(80) + uri
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+        })
+          .then(response => response.json())
+          .then(data => {
+              let reply: AIReply = {
+                  sender: '秘书',
+                  message: data.content,
+                  imageUrl: '',
+                  link: '',
+                  category: MessageCategory.Human,
+                  status: "enter"
+              }
+              console.log(reply)
+              setAiReplies((aiReplies) => [...aiReplies, reply])
+              setReply(reply)
+
+              setFileList([])
+              setUploaded(false)
+              setImageUploaded(false)
+          })
+          .catch((error) => {
+              console.error('Error:', error);
+          });
+    };
+
+    const props: UploadProps = {
+        onRemove: (file) => {
+            const index = fileList.indexOf(file);
+            const newFileList = fileList.slice();
+            newFileList.splice(index, 1);
+            setFileList(newFileList);
+        },
+        beforeUpload: (file) => {
+            setFileList([...fileList, file]);
+
+            setQueryText(file.name)
+            return false;
+        },
+        fileList,
+    };
+    const sendMessageToAI = () => {
+        if (fileList.length > 0){
+            if (imageUploaded){
+                handleKnowledge(api_url.portal.image.upload)
+            }else if (uploaded){
+                handleKnowledge(api_url.portal.knowledge.upload)
+            }
+        }else{
+            let question = {
+                input: queryText,
+                customer_info: 'luca， 男， 技术宅',
+            }
+            setSendQuery(question)
+        }
     }
     const process_chat_message = (event: any) => {
         if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误'){
@@ -158,7 +225,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                   <TeamOutlined style={{color: "black", fontSize: 14}}/>
                               </Popover>
                           </Col>
-                          <Col span={18}>
+                          <Col span={14}>
                               <Popover
                                 placement={"bottomLeft"}
                                 content={
@@ -185,6 +252,22 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                               </Popover>
                           </Col>
                           <Col span={2}>
+                              <FileImageOutlined onClick={(e)=>{
+                                  setImageUploaded(true); document.getElementById('upload-image')?.click();
+                              }}/>
+                              <Upload id="upload-image" maxCount={1} showUploadList={false} {...props}>
+                                  <Button style={{display: "none"}}></Button>
+                              </Upload>
+                          </Col>
+                          <Col span={2}>
+                              <PlusOutlined onClick={(e)=>{
+                                  setUploaded(true); document.getElementById('upload-input')?.click();
+                              }}/>
+                              <Upload id="upload-input" maxCount={1} showUploadList={false} {...props}>
+                                  <Button style={{display: "none"}}></Button>
+                              </Upload>
+                          </Col>
+                          <Col span={1}>
                               <SendOutlined style={{color: "black", fontSize: 14, marginLeft: 10}}
                                             onClick={sendMessageToAI}/>
                           </Col>

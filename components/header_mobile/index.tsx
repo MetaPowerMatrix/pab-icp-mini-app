@@ -16,6 +16,7 @@ import Meta from "antd/es/card/Meta";
 import TagsComponent from "@/components/tags";
 import SlidePanel from "@/components/SlidePanel";
 import KOLListComponent from "@/components/KOL";
+import {doMd5Sum} from "@/lib/utils";
 
 const awardHead = ()=>{
 	return(
@@ -87,9 +88,11 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 		})
 	},[activeId, reload]);
 
+
 	const handleSubmitTags = () => {
 		onShowProgress(true)
-		command.submit_pato_tags(myTags, activeId).then((resp)=>{
+		let session = doMd5Sum(activeId)
+		command.submit_pato_tags(myTags, activeId, session).then((resp)=>{
 			// setAvatar(resp)
 			onShowProgress(false)
 			setReload(reload+1)

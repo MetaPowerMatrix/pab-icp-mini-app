@@ -8,11 +8,18 @@
     background-image: linear-gradient(to bottom, #000000, #cccccc);
 }
 
+.input_section{
+    border: 1px solid white;
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+}
+
 .prompt_input {
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: solid 1px black;
+    border: solid 0px black;
 }
 
 .action_bar {

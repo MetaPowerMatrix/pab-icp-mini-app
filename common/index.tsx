@@ -74,8 +74,11 @@ export const api_url = {
     'names': '/api/pato/names',
     'tags': '/api/pato/tags',
     'hots': '/api/pato/hots',
-    'submitTags': '/api/pato/proxy/submit/tags',
+    'submitTags': '/api/pato/submit/tags',
     'retrieve': '/api/pato/retrieve',
+    'image': {
+      'upload': '/api/pato/upload/image',
+    },
     'knowledge':{
       'upload': '/api/upload/knowledge',
       'summary': '/api/knowledge/summary',

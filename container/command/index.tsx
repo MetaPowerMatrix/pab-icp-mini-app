@@ -35,8 +35,8 @@ const useCommand = () => {
     }
     return id
   }
-  const submit_pato_tags = async (tags: string[], id: string): Promise<string> => {
-    let url = getApiServer(80) + api_url.portal.submitTags + "/" + id
+  const submit_pato_tags = async (tags: string[], id: string, session: string): Promise<string> => {
+    let url = getApiServer(80) + api_url.portal.submitTags + "/" + id + "/" + session
     let response = await fetch(
       `${url}`,
       {
@@ -148,8 +148,8 @@ const useCommand = () => {
     }
     return []
   }
-  const archive_session = async (id: string, session: string, date: string) => {
-    let data = {id: id, session: session, date: date}
+  const archive_session = async (id: string, session: string, content: string) => {
+    let data = {id: id, session: session, content: content}
     let url = getApiServer(80) + api_url.portal.message.archive
     let response = await fetch(
       `${url}`,

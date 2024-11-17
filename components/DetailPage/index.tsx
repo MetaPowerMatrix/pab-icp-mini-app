@@ -73,20 +73,23 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
             <Link href={"/"} style={{color: "white"}}>
                 <ArrowLeftOutlined style={{margin:10, fontSize: 16}}/>
             </Link>
-            <textarea value={queryText} placeholder="那么，说说你的想法..." rows={3}
-                      className={styles.prompt_input}
-                      onChange={inputQuestion}
-            />
-            <div className={styles.action_bar}>
-                {stopped ?
-                  <AudioOutlined style={{fontSize: 18}} onClick={() => stop_record()}/>
-                  :
-                  <PauseOutlined style={{fontSize: 18}}
-                                 onClick={() => stop_record()}/>
-                }
-                <SendOutlined style={{fontSize: 18, marginLeft: 10}}
-                              onClick={() => setSendQuery(queryText)}/>
+            <div className={styles.input_section}>
+                <textarea value={queryText} placeholder="那么，说说你的想法..." rows={3}
+                          className={styles.prompt_input}
+                          onChange={inputQuestion}
+                />
+                <div className={styles.action_bar}>
+                    {stopped ?
+                      <AudioOutlined style={{fontSize: 18}} onClick={() => stop_record()}/>
+                      :
+                      <PauseOutlined style={{fontSize: 18}}
+                                     onClick={() => stop_record()}/>
+                    }
+                    <SendOutlined style={{fontSize: 18, marginLeft: 10}}
+                                  onClick={() => setSendQuery(queryText)}/>
+                </div>
             </div>
+
             <div style={{height: 470, marginTop: 10, overflow: "scroll"}}>
                 <List
                   itemLayout="vertical"
@@ -96,7 +99,8 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
                     <List.Item key={index} style={{color: "white"}}>
                         <List.Item.Meta
                           avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}/>}
-                          title={<><a style={{color: "white"}}>{item.sender}</a><span style={{color: "white"}}>(Assistant)</span></>}
+                          title={<><a style={{color: "white"}}>{item.sender}</a><span
+                            style={{color: "white"}}>(Assistant)</span></>}
                         />
                         {item.content}
                     </List.Item>
