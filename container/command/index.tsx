@@ -299,20 +299,24 @@ const useCommand = () => {
     }
     return null
   }
-  const query_knowledges = async (id: string) => {
-    if (id === "") return null
-    let url = getApiServer(80) + api_url.portal.knowledge.query + "/" + id
-    try {
-      let response = await fetch(`${url}`,)
-      if (response.ok) {
-        let dataJson = await response.json()
-        let knowLedges: string = dataJson.content
-        return knowLedges
+  const query_knowledges = async (input: string) => {
+    let data = {"input": input}
+    let url = getApiServer(80) + api_url.portal.knowledge.query
+    let response = await fetch(
+      `${url}`,
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
       }
-    } catch (e) {
-      console.log(e)
+    )
+    if (response.ok) {
+      let dataJson = await response.json()
+      return dataJson.content
     }
-    return null
+    return ""
   }
   const become_kol = async (id: string, from: string) => {
     let url = getApiServer(80) + api_url.portal.town.becom_kol + "/" + id + "/" + from

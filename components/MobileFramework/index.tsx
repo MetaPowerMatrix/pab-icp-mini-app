@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {
     AudioOutlined, FileImageOutlined,
-    PauseOutlined, PlusOutlined, SaveOutlined,
+    PauseOutlined, PlusOutlined, SaveOutlined, SearchOutlined,
     SendOutlined,
     TagsOutlined, TeamOutlined, UploadOutlined
 } from "@ant-design/icons";
@@ -161,6 +161,20 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
             setSendQuery(question)
         }
     }
+    const sendQueryKnowledgeMessage = () => {
+        command.query_knowledges(queryText).then((res) => {
+            let reply: AIReply = {
+                sender: '秘书',
+                message: res,
+                imageUrl: '',
+                link: '',
+                category: MessageCategory.Human,
+                status: "enter"
+            }
+            setAiReplies((aiReplies) => [...aiReplies, reply])
+            setReply(reply)
+        })
+    }
     const process_chat_message = (event: any) => {
         if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误'){
             // console.log(event.data.toString())
@@ -230,7 +244,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                   <TeamOutlined style={{color: "black", fontSize: 14}}/>
                               </Popover>
                           </Col>
-                          <Col span={12}>
+                          <Col span={11}>
                               <Popover
                                 placement={"bottomLeft"}
                                 content={
@@ -255,6 +269,10 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                       })
                                   }
                               </Popover>
+                          </Col>
+                          <Col span={2}>
+                              <SearchOutlined style={{color: "black", fontSize: 14}}
+                                            onClick={sendQueryKnowledgeMessage}/>
                           </Col>
                           <Col span={2}>
                               {stopped ?

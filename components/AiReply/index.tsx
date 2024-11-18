@@ -9,7 +9,7 @@ const CardReply = ({imageUrl, message, link}:{message: string, imageUrl: string,
 	return (
 		<>
 			<Card bodyStyle={{padding: 5}}  className="card_message"
-				style={{width: 240, border: "1px solid #79c5c5", marginLeft: "auto"}}
+				style={{width: 280, border: "1px solid #79c5c5", marginLeft: "auto"}}
 				cover={<img height={60} alt="example" src={imageUrl}/>}
 			>
 				<Meta style={{fontSize: 12}} description={message}/>
@@ -22,7 +22,7 @@ const CardReply = ({imageUrl, message, link}:{message: string, imageUrl: string,
 }
 const HumanQuestion = ({message}: { message: string }) => {
 	return (
-		<Card bodyStyle={{padding: 5}}  style={{width: 240, border: "1px solid #79c5c5"}}>
+		<Card bodyStyle={{padding: 5}}  style={{width: 280, border: "1px solid #79c5c5"}}>
 			<Meta style={{fontSize: 12}} description={message} />
 		</Card>
 	);
