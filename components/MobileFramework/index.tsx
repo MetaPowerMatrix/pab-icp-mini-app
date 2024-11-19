@@ -115,7 +115,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                 message: notify,
                 imageUrl: '',
                 link: '',
-                category: MessageCategory.Card,
+                category: MessageCategory.Chat,
                 status: "enter"
             }
             console.log(reply)
