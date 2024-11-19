@@ -121,9 +121,6 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
             console.log(reply)
             setAiReplies((aiReplies) => [...aiReplies, reply])
             setReply(reply)
-
-            // @ts-ignore
-            listRef.current?.addItem(reply)
         }
     },[notify])
 
