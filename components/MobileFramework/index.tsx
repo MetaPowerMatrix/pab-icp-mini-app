@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {
-    AudioOutlined, FileImageOutlined,
+    AudioOutlined, DiscordOutlined, FileImageOutlined,
     PauseOutlined, PlusOutlined, SaveOutlined, SearchOutlined,
     SendOutlined,
     TagsOutlined, TeamOutlined, UploadOutlined
@@ -201,6 +201,16 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
             })
         })
     }
+    const playGame = () => {
+        let question = {
+            input: '猜猜我心里想了一个什么数',
+            customer_info: 'luca， 男， 技术宅',
+            atIds: [],
+            autoReply: true,
+            playGame: true
+        }
+        setSendQuery(question)
+    }
     const sendMessageToAI = () => {
         if (fileList.length > 0){
             if (imageUploaded){
@@ -213,7 +223,8 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                 input: queryText,
                 customer_info: 'luca， 男， 技术宅',
                 atIds: atIds,
-                autoReply: true
+                autoReply: true,
+                playGame: false
             }
             setSendQuery(question)
         }
@@ -306,7 +317,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                                   <TeamOutlined style={{color: "black", fontSize: 14}}/>
                               </Popover>
                           </Col>
-                          <Col span={11}>
+                          <Col span={9}>
                               <Popover
                                 placement={"bottomLeft"}
                                 content={
@@ -333,6 +344,10 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                               </Popover>
                           </Col>
                           <Col span={2}>
+                              <DiscordOutlined style={{color: "black", fontSize: 14}}
+                                            onClick={playGame}/>
+                          </Col>
+                          <Col span={2}>
                               <SearchOutlined style={{color: "black", fontSize: 14}}
                                             onClick={sendQueryKnowledgeMessage}/>
                           </Col>
@@ -340,7 +355,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                               {stopped ?
                                 <AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
                                 :
-                                <PauseOutlined style={{color: "black", fontSize: 14, marginRight: 10}}
+                                <PauseOutlined style={{color: "black", fontSize: 14}}
                                                onClick={() => stop_record()}/>
                               }
                           </Col>
