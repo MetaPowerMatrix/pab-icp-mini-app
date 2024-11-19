@@ -112,20 +112,18 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 					</div>
 				</div>
 				<Drawer
-					title="频道"
+					title="设置"
 					placement="left"
 					closable={false}
 					onClose={onClose}
 					open={open}
 					width={220}
-					height={680}
-					style={{backgroundColor: "black"}}
 					key="left"
-					className={styles.drawer}
 				>
-					<label style={{color: "white", marginRight: 10}}>自动回复: </label><Switch onChange={(e)=>{
-						alert(e)
-				}} checkedChildren="开启" unCheckedChildren="关闭" defaultChecked size={"small"}/>
+					<div style={{display: "flex", justifyContent: "space-between"}}>
+						<label>自动回复</label>
+						<Switch defaultChecked onChange={(e) => { }} checkedChildren="开启" unCheckedChildren="关闭"/>
+					</div>
 				</Drawer>
 		</div>
 	)

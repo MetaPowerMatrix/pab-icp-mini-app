@@ -145,14 +145,6 @@
     font-size: 14px;
 }
 
-.drawer{
-    background-color: black;
-}
-
-.drawer h3 {
-    color: white;
-}
-
 .prompt_input {
     width: 90%;
     margin-top: 20px;
