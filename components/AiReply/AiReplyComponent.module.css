@@ -2,11 +2,11 @@
     margin-top: 15px;
     padding: 0px 10px;
     background-color: #ffffff;
-    border:1px solid #eeb075;
-    color: gray;
-    border-radius: 5px;
+    border:none;
+    font-size: 18px;
+    color: black;
 }
 .card_message_button_container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: right;
 }

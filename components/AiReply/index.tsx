@@ -1,20 +1,24 @@
 import React from 'react';
-import {Card, Divider} from "antd";
+import {Card} from "antd";
 import Meta from "antd/es/card/Meta";
 import {MessageCategory} from "@/common";
 import styles from "./AiReplyComponent.module.css";
 import Link from "next/link";
+import {
+	AudioOutlined,
+	LinkOutlined
+} from "@ant-design/icons";
 
 const CardReply = ({imageUrl, message, link}:{message: string, imageUrl: string, link: string}) => {
 	return (
 		<>
 			<Card bodyStyle={{padding: 5}}  className="card_message"
 				style={{width: 280, border: "1px solid #79c5c5", marginLeft: "auto"}}
-				cover={<img height={60} alt="example" src={imageUrl}/>}
+				cover={imageUrl.length > 0 && <img height={60} alt="example" src={imageUrl}/>}
 			>
 				<Meta style={{fontSize: 12}} description={message}/>
 				<div className={styles.card_message_button_container}>
-					<button className={styles.card_message_button}><Link href={link}>{'详情>'}</Link> </button>
+					<button className={styles.card_message_button}><Link href={link}><LinkOutlined /></Link> </button>
 				</div>
 			</Card>
 		</>
@@ -35,7 +39,7 @@ const HumanChat = ({message, reply}:{message: string, reply: ()=>void}) => {
 			>
 				<Meta style={{fontSize: 12}} description={message}/>
 				<div className={styles.card_message_button_container}>
-					<button onClick={reply} className={styles.card_message_button}>{'回复>'}</button>
+					<button onClick={reply} className={styles.card_message_button}><AudioOutlined /></button>
 				</div>
 			</Card>
 		</>
