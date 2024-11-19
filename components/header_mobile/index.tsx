@@ -91,7 +91,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 
 	const handleSubmitTags = () => {
 		onShowProgress(true)
-		let session = doMd5Sum(activeId)
+		let session = doMd5Sum(activeId + Date.now().toLocaleString())
 		command.submit_pato_tags(myTags, activeId, session).then((resp)=>{
 			// setAvatar(resp)
 			onShowProgress(false)

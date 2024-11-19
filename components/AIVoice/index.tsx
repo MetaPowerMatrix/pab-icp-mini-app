@@ -11,7 +11,8 @@ declare global {
 	}
 }
 
-const AIVoice = ({activeId, process_ws_message, startStop}:{ activeId:string, process_ws_message:(event: any)=>void, startStop:boolean }) => {
+const AIVoice = ({activeId, process_ws_message, onReply, startStop}:
+     { activeId:string, process_ws_message:(event: any)=>void, onReply:(message: string)=>void, startStop:boolean }) => {
 	const [recorder, setRecorder] = useState<MediaRecorder>();
 	const [wsSocket, setWsSocket] = useState<WebSocketManager>();
 	const [client, setClient] = useState<mqtt.MqttClient | null>(null);
@@ -41,8 +42,10 @@ const AIVoice = ({activeId, process_ws_message, startStop}:{ activeId:string, pr
 			// Handler for incoming messages
 			const onMessage = (topic: string, message: Buffer) => {
 				if (topic === topic_instruct){
-					console.log("receive answer: ", message.toString())
-					// onReply(message.toString())
+					console.log("receive notification: ", message.toString())
+					if (message.length > 0){
+						onReply(message.toString())
+					}
 				}else{
 					console.log("receive audio: ", message.toString())
 					playAudioWithWebAudioApi(message.toString())

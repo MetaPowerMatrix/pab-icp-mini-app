@@ -61,6 +61,7 @@ export interface PatoInfo {
 export enum MessageCategory {
   Human = "human",
   Card = "card",
+  Chat = "chat",
   Image = "image",
   Video = "video",
   Audio = "audio",

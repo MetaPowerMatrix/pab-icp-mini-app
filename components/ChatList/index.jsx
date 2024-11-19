@@ -104,7 +104,7 @@ const ChatListComponent = forwardRef((props, ref) => {
                         className={`box`}
                         style={{margin: 10}}
                     >
-                        <AiReplyComponent link={item.link} message={item.message} imageUrl={item.imageUrl} category={item.category}/>
+                        <AiReplyComponent reply={()=>alert('reply')} link={item.link} message={item.message} imageUrl={item.imageUrl} category={item.category}/>
                     </div>
                 ))}
             </div>

@@ -25,6 +25,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const [loading, setLoading] = useState(false);
     const [activeTab, setActivTab] = useState('home');
     const [query, setQuery] = useState("");
+    const [notify, setNotify] = useState("")
     const [start, setStart] = useState(false);
     const [showSplash, setShowSplash] = useState(true);
     const t = useTranslations('Login');
@@ -40,6 +41,9 @@ export default function LayoutMobile({children, title, description, onChangeId, 
         if (event.data.toString() !== 'pong') {
             setQuery(event.data.toString())
         }
+    }
+    const receive_notify = (message) => {
+        setNotify(message)
     }
 
     const stop_record = (startStop) => {
@@ -114,7 +118,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                     <HomePage ctrlVoiceStart={stop_record} query={query} activeId={activeId}/>
                 }
                 {key === 'chat' &&
-                    <MobileFramework ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
+                    <MobileFramework notify={notify} ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
                 }
                 {key === 'discovery' &&
                     <TownMobile ctrlVoiceStart={stop_record} query={query} name={activeName} id={activeId} onShowProgress={showProgressBar} />
@@ -141,7 +145,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 showSplash ? <SplashScreen/> :
                     isLogin ?
                             <>
-                                <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
+                                <AIVoice onReply={receive_notify} activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
                                 {showTabs ?
                                     <Tabs
                                         destroyInactiveTabPane={true}

@@ -7,7 +7,7 @@ import {
     SendOutlined,
     TagsOutlined, TeamOutlined, UploadOutlined
 } from "@ant-design/icons";
-import {Button, Col, GetProp, Modal, Popover, Row, Upload, UploadFile, UploadProps} from "antd";
+import {Button, Col, GetProp, Modal, Popover, Row, Tag, Upload, UploadFile, UploadProps} from "antd";
 import commandDataContainer from "../../container/command";
 import {api_url, ChatMessage, getApiServer, MessageCategory, PortalHotAi} from "@/common";
 import TagsComponent from "@/components/tags";
@@ -16,6 +16,43 @@ import AIChat from "@/components/AIChat";
 import { v4 as uuidv4 } from 'uuid';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+const PatosComponent = ({ patos, myTags, myIds, height=80 }
+      :{patos: PortalHotAi[], myTags: (tags: string[])=>void, myIds: (tags: string[])=>void, height?: number}) =>{
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+    const handleTagChange = (tag: string, id: string, checked: boolean) => {
+        const nextSelectedTags = checked
+          ? [...selectedTags, tag]
+          : selectedTags.filter((t) => t !== tag);
+        setSelectedTags(nextSelectedTags);
+        myTags(nextSelectedTags);
+
+        const nextSelectedIds = checked
+          ? [...selectedIds, id]
+          : selectedIds.filter((t) => t !== id);
+        setSelectedIds(nextSelectedIds);
+
+        myIds(nextSelectedIds)
+    };
+
+    return (
+      <>
+          <div style={{ height: height, overflow: 'scroll', width: '100%' }}>
+              {patos.map<React.ReactNode>((tag) => (
+                <Tag.CheckableTag
+                  key={tag.id}
+                  checked={selectedTags.includes(tag.name)}
+                  onChange={(checked) => handleTagChange(tag.name, tag.id, checked)}
+                >
+                    <h3 style={{ fontSize: 12, color: "#eeb075" }}>{tag.name}</h3>
+                </Tag.CheckableTag>
+              ))}
+          </div>
+      </>
+    );
+}
 
 interface AIReply {
     sender: string,
@@ -27,7 +64,8 @@ interface AIReply {
 }
 const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
 
-const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, activeId: string, query: string, ctrlVoiceStart: (startStop: boolean)=>void}) => {
+const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
+       :{name: string, activeId: string, query: string, notify: string, ctrlVoiceStart: (startStop: boolean)=>void}) => {
     const headerRef = useRef(null);
     const listRef = useRef();
     const promptInputRef = useRef(null);
@@ -36,7 +74,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const [sendQuery, setSendQuery] = useState<any>('')
     const [openPop, setOpenPop] = useState<boolean>(false)
     const [openTeam, setOpenTeam] = useState<boolean>(false)
-    const [patos, setPatos] = useState<string[]>([])
+    const [patos, setPatos] = useState<PortalHotAi[]>([])
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploaded, setUploaded] = useState<boolean>(false)
@@ -44,13 +82,14 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
     const [session, setSession] = useState<string>(uuidv4())
     const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
+    const [atIds, setAtIds] = useState<string[]>([])
     const [reply, setReply] = useState<AIReply>();
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
         command.getTownHots().then((res) => {
             if (res !== null) {
-                setPatos(res.map((item) => item.name))
+                setPatos(res)
             }
         })
         let ctx = gsap.context(() => {
@@ -68,6 +107,25 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
         // @ts-ignore
         listRef.current?.addItem(reply)
     },[reply])
+
+    useEffect(() => {
+        if (notify.length > 0){
+            let reply: AIReply = {
+                sender: '',
+                message: notify,
+                imageUrl: '',
+                link: '',
+                category: MessageCategory.Card,
+                status: "enter"
+            }
+            console.log(reply)
+            setAiReplies((aiReplies) => [...aiReplies, reply])
+            setReply(reply)
+
+            // @ts-ignore
+            listRef.current?.addItem(reply)
+        }
+    },[notify])
 
     const stop_record = () => {
         if (stopped){
@@ -157,6 +215,8 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
             let question = {
                 input: queryText,
                 customer_info: 'luca， 男， 技术宅',
+                atIds: atIds,
+                autoReply: true
             }
             setSendQuery(question)
         }
@@ -231,10 +291,15 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                 placement={"bottomLeft"}
                                 content={
                                     <div style={{width: 270}}>
-                                        <TagsComponent presetTags={[]} tags={patos} myTags={(tags) => {
-                                            setQueryText("@"+tags.join(" @"))
-                                            setSelectedPatos(tags)
-                                        }}/>
+                                        <PatosComponent patos={patos}
+                                            myTags={(tags) => {
+                                                setQueryText("@"+tags.join(" @"))
+                                                setSelectedPatos(tags)
+                                            }}
+                                            myIds={(ids) => {
+                                                setAtIds(ids)
+                                            }}
+                                        />
                                     </div>
                                 }
                                 trigger="click"

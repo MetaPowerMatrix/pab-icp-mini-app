@@ -9,7 +9,7 @@ import {
 import {useGSAP} from "@gsap/react";
 import {PatoInfo, TopicInfo} from "@/common";
 import commandDataContainer from "@/container/command";
-import {Drawer} from "antd";
+import {Drawer, Switch} from "antd";
 import Link from "next/link";
 
 // Define types for ref elements
@@ -89,7 +89,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 									<h5>C: 没钱</h5>
 									<h5>D: 同问</h5>
 								</ul>
-								<button className={styles.upgrade_btn}>聊聊</button>
+								<Link href={"/detail"} ><button className={styles.upgrade_btn}>发起话题</button></Link>
 							</div>
 						</div>
 					</div>
@@ -123,9 +123,9 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 					key="left"
 					className={styles.drawer}
 				>
-					<h3>搜索</h3>
-					<h3>会员</h3>
-					<h3>客服</h3>
+					<label style={{color: "white", marginRight: 10}}>自动回复: </label><Switch onChange={(e)=>{
+						alert(e)
+				}} checkedChildren="开启" unCheckedChildren="关闭" defaultChecked size={"small"}/>
 				</Drawer>
 		</div>
 	)
