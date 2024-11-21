@@ -3,8 +3,8 @@
     z-index: 1;
     left: 0;
     top: 0;
-    max-width: 410px;
-    height: 660px;
+    width: 420px;
+    height: 720px;
     overflow: auto;
     background-color: rgb(0,0,0);
 }

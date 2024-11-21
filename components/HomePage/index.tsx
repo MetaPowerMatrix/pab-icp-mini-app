@@ -79,7 +79,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 				<div style={{overflow: "scroll", height: "95%"}}>
 					<div className={styles.upgrade_section} ref={upgradeRef}>
 						<div className={styles.upgrade_content}>
-							<img src="images/ad-1.webp" className={styles.video_thumbnail} alt={"img"}/>
+							<img src="images/ad-1.jpg" className={styles.video_thumbnail} alt={"img"}/>
 							<div style={{padding: 15}}>
 								<h3>比特币还可以买吗，太高了吧！！！</h3>
 								<h5>#投资#BTC#DOGE</h5>

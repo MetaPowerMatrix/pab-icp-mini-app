@@ -171,12 +171,12 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
               setReply(reply)
 
               setFileList([])
-              setUploaded(false)
-              setImageUploaded(false)
           })
           .catch((error) => {
               console.error('Error:', error);
           });
+        setUploaded(false)
+        setImageUploaded(false)
     };
 
     const props: UploadProps = {
@@ -221,7 +221,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
         }else{
             let question = {
                 input: queryText,
-                customer_info: 'luca， 男， 技术宅',
+                customer_info: name,
                 atIds: atIds,
                 autoReply: true,
                 playGame: false
@@ -239,6 +239,8 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                 category: MessageCategory.Human,
                 status: "enter"
             }
+            console.log(reply)
+
             setAiReplies((aiReplies) => [...aiReplies, reply])
             setReply(reply)
         })

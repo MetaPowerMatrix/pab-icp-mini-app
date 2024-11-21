@@ -13,7 +13,7 @@ const CardReply = ({imageUrl, message, link}:{message: string, imageUrl: string,
 	return (
 		<>
 			<Card bodyStyle={{padding: 5}}  className="card_message"
-				style={{width: 280, border: "1px solid #79c5c5", marginLeft: "auto"}}
+				style={{width: 280, border: "1px solid #79c5c5", marginLeft: "auto", color: "black"}}
 				cover={imageUrl.length > 0 && <img height={60} alt="example" src={imageUrl}/>}
 			>
 				<Meta style={{fontSize: 12}} description={message}/>

@@ -53,7 +53,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     useEffect(() => {
         setTimeout(() => {
             setShowSplash(false)
-        }, 3000)
+        }, 2000)
     }, [])
 
     useEffect(() => {
