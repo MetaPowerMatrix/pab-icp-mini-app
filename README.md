@@ -3,12 +3,6 @@
 - 验证ICP网络运行社交应用的可行性
 -[ Web App访问地址](https://tsoel-7yaaa-aaaai-alcva-cai.icp0.io/)
 
-![Home](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/home.png)
-![Splash](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/splash.png)
-![topic](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/topic.png)
-![chat](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/chat.png)
-![profile](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/profile.png)
-
 ## Introduction
 PartyBoard原力小镇项目的前端App代码，使用React + netx.js实现，聊天使用了websocket机制
 
@@ -50,6 +44,14 @@ $ dfx canister call agent request_all_patos
 
 ## Documentation
 PartyBoard原力小镇项目的前端App代码，使用React + netx.js实现，聊天使用了websocket机制
+
+## ScreenShot
+![Home](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/home.png)
+![Splash](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/splash.png)
+![topic](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/topic.png)
+![chat](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/chat.png)
+![profile](https://github.com/MetaPowerMatrix/pab-icp-mini-app/blob/master/screens/profile.png)
+
 
 ## Roadmap
 Describe the project roadmap, this could be the grant milestones, but it could also be the team's broader project roadmap.
