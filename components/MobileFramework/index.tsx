@@ -78,6 +78,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploaded, setUploaded] = useState<boolean>(false)
+    const [gameRound, setGameRound] = useState<boolean>(false)
     const [imageUploaded, setImageUploaded] = useState<boolean>(false)
     const [selectedPatos, setSelectedPatos] = useState<string[]>([]);
     const [session, setSession] = useState<string>(uuidv4())
@@ -202,9 +203,12 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
         })
     }
     const playGame = () => {
+        setGameRound(true)
+        let msg = '猜猜我心里想了一个什么数'
+        setQueryText(msg)
         let question = {
-            input: '猜猜我心里想了一个什么数',
-            customer_info: 'luca， 男， 技术宅',
+            input: msg,
+            customer_info: '',
             atIds: [],
             autoReply: true,
             playGame: true
@@ -214,8 +218,10 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     const sendMessageToAI = () => {
         if (fileList.length > 0){
             if (imageUploaded){
+                setGameRound(false)
                 handleKnowledge(api_url.portal.image.upload)
             }else if (uploaded){
+                setGameRound(false)
                 handleKnowledge(api_url.portal.knowledge.upload)
             }
         }else{
@@ -224,12 +230,13 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                 customer_info: name,
                 atIds: atIds,
                 autoReply: true,
-                playGame: false
+                playGame: gameRound
             }
             setSendQuery(question)
         }
     }
     const sendQueryKnowledgeMessage = () => {
+        setGameRound(false)
         command.query_knowledges(queryText).then((res) => {
             let reply: AIReply = {
                 sender: '秘书',
@@ -303,6 +310,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                                     <div style={{width: 270}}>
                                         <PatosComponent patos={patos}
                                             myTags={(tags) => {
+                                                setGameRound(false)
                                                 setQueryText("@"+tags.join(" @"))
                                                 setSelectedPatos(tags)
                                             }}

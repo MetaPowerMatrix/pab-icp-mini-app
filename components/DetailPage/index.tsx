@@ -1,10 +1,9 @@
 import styles from './DetailPage.module.css';
 import {AudioOutlined, ArrowLeftOutlined, PauseOutlined, SendOutlined} from "@ant-design/icons";
-import {Avatar, Col, List, Row} from "antd";
+import {Avatar, List} from "antd";
 import {useSwipe} from "../UseSwipe";
 import AIChat from "../AIChat";
 import React, {useEffect, useState} from "react";
-import {useTranslations} from "next-intl";
 import {ChatMessage} from "@/common";
 import Link from "next/link";
 
@@ -20,7 +19,6 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
     const [queryText, setQueryText] = useState<string>(query)
     const [sendQuery, setSendQuery] = useState<string>('')
     const [messages, setMessages] = useState<ChatMessage[]>([])
-    const t = useTranslations('Index');
 
     useEffect(() => {
         setQueryText(query)
@@ -40,7 +38,7 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
     }
     const process_chat_message = (event: any) => {
         if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误') {
-            // console.log(event.data.toString())
+            console.log(event.data.toString())
             let resp: [] = JSON.parse(event.data.toString())
             let msgs: ChatMessage[] = []
             resp.forEach((message: any) => {

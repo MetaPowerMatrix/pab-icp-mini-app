@@ -10,7 +10,6 @@ import ModalLogin from "@/components/login";
 import {useTranslations} from 'next-intl';
 import ProgressBarComponent from "@/components/ProgressBar";
 import HeaderPanelMobile from "./header_mobile";
-import TownMobile from "@/components/town";
 import AIVoice from "@/components/AIVoice";
 import MobileFramework from "@/components/MobileFramework";
 import SplashScreen from "@/components/SplashScreen";
@@ -120,9 +119,9 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 {key === 'chat' &&
                     <MobileFramework notify={notify} ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
                 }
-                {key === 'discovery' &&
-                    <TownMobile ctrlVoiceStart={stop_record} query={query} name={activeName} id={activeId} onShowProgress={showProgressBar} />
-                }
+                {/*{key === 'discovery' &&*/}
+                {/*    <TownMobile ctrlVoiceStart={stop_record} query={query} name={activeName} id={activeId} onShowProgress={showProgressBar} />*/}
+                {/*}*/}
                 {key === 'mine' &&
                     <HeaderPanelMobile
                         onShowProgress={showProgressBar}
