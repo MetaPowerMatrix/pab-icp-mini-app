@@ -94,8 +94,10 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 		let session = doMd5Sum(activeId + Date.now().toLocaleString())
 		command.submit_pato_tags(myTags, activeId, session).then((resp)=>{
 			// setAvatar(resp)
-			onShowProgress(false)
-			setReload(reload+1)
+			setTimeout(()=>{
+				onShowProgress(false)
+				setReload(reload+1)
+			}, 20000)
 		})
 	};
 	const handleOpenChange = (newOpen: boolean) => {
