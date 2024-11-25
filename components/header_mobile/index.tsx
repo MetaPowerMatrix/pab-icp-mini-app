@@ -9,7 +9,7 @@ import {
 import React, {useEffect, useState} from "react";
 import commandDataContainer from "@/container/command";
 import {useTranslations} from "next-intl";
-import {KolInfo, PatoInfo} from "@/common";
+import {KolInfo, PatoInfo, PortalHotAi} from "@/common";
 import styles from './HeaderPanelMobile.module.css'
 import QRCodeComponent from "@/components/QRCode";
 import Meta from "antd/es/card/Meta";
@@ -54,6 +54,8 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const [reload, setReload] = useState<number>(0)
 	const [kols, setKols] = useState<KolInfo[]>([])
 	const [myKol, setMyKol] = useState<KolInfo|undefined>(undefined)
+	const [followers, setFollowers] = useState<PortalHotAi[]>([])
+	const [following, setFollowing] = useState<PortalHotAi[]>([])
 	const [popContent, setPopContent] = useState<string>("become_kol")
 	const t = useTranslations('Login');
 
@@ -87,7 +89,29 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 			})
 		})
 	},[activeId, reload]);
+	useEffect(() => {
+		command.getTownHots().then((res) => {
+			if (res !== null) {
+				let fl: PortalHotAi[] = []
+				res.forEach((info) => {
+					myKol?.followers.forEach((follower) => {
+						if (follower === info.id) {
+							fl.push(info)
+						}
+					})
+					setFollowers([...followers, ...fl])
 
+					let fw: PortalHotAi[] = []
+					kols.forEach((kol) => {
+						if (kol.followers.includes(info.id)) {
+							fw.push(info)
+						}
+					})
+					setFollowing([...following, ...fw])
+				})
+			}
+		})
+	}, [myKol, kols]);
 
 	const handleSubmitTags = () => {
 		onShowProgress(true)
@@ -190,10 +214,9 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 						<Meta title={relationshipHead("我的粉丝")}/>
 						<div>
 							{
-								myKol !== undefined &&
-									myKol.followers.map((follower, index) => {
+									followers.map((follower, index) => {
 										return (
-											<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.substring(0, 5)}</span>
+											<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.name}</span>
 										)
 									})
 							}
@@ -201,7 +224,15 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					</div>
 					<div className={styles.info_container}>
 						<Meta title={relationshipHead("我的关注")}/>
-						<div style={{width: 200}}></div>
+						<div style={{marginRight: 10}}>
+							{
+								following.map((follower, index) => {
+									return (
+										<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.name}</span>
+									)
+								})
+							}
+						</div>
 						<div>
 							<PlusOutlined onClick={()=>{
 								setPopContent("follow")
