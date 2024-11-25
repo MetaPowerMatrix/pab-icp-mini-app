@@ -55,7 +55,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const [kols, setKols] = useState<KolInfo[]>([])
 	const [myKol, setMyKol] = useState<KolInfo|undefined>(undefined)
 	const [followers, setFollowers] = useState<PortalHotAi[]>([])
-	const [following, setFollowing] = useState<PortalHotAi[]>([])
+	const [following, setFollowing] = useState<string[]>([])
 	const [popContent, setPopContent] = useState<string>("become_kol")
 	const t = useTranslations('Login');
 
@@ -89,6 +89,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 			})
 		})
 	},[activeId, reload]);
+
 	useEffect(() => {
 		command.getTownHots().then((res) => {
 			if (res !== null) {
@@ -100,18 +101,18 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 						}
 					})
 					setFollowers([...followers, ...fl])
-
-					let fw: PortalHotAi[] = []
-					kols.forEach((kol) => {
-						if (kol.followers.includes(info.id)) {
-							fw.push(info)
-						}
-					})
-					setFollowing([...following, ...fw])
 				})
 			}
 		})
-	}, [myKol, kols]);
+		let fw: string[] = []
+		kols.forEach((kol) => {
+			if (kol.followers.includes(myKol?.id ?? "")) {
+				fw.push(kol.name)
+			}
+		})
+		setFollowing(fw)
+
+	}, [myKol]);
 
 	const handleSubmitTags = () => {
 		onShowProgress(true)
@@ -228,7 +229,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 							{
 								following.map((follower, index) => {
 									return (
-										<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.name}</span>
+										<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower}</span>
 									)
 								})
 							}
