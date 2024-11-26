@@ -308,7 +308,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                                 placement={"bottomLeft"}
                                 content={
                                     <div style={{width: 270}}>
-                                        <PatosComponent patos={patos}
+                                        <PatosComponent patos={patos} height={160}
                                             myTags={(tags) => {
                                                 setGameRound(false)
                                                 setQueryText("@"+tags.join(" @"))
