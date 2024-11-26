@@ -163,14 +163,9 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 
 			<div className={styles.header_panel_mobile_info}>
 				<Card bodyStyle={{padding: 5}} style={{
-					minWidth: 390,
-					marginLeft: 20,
-					marginRight: 20,
-					top: 195,
+					margin: 20,
 					zIndex: 3,
-					position: "absolute",
-					height: 470,
-					width: 370,
+					height: 460,
 					overflow: "scroll",
 					backgroundColor: "#212121",
 					opacity: "0.9",
@@ -213,7 +208,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					</div>
 					<div className={styles.info_container}>
 						<Meta title={relationshipHead("我的粉丝")}/>
-						<div>
+						<div style={{marginRight: 10, overflow: "hidden"}}>
 							{
 									followers.map((follower, index) => {
 										return (
@@ -225,7 +220,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					</div>
 					<div className={styles.info_container}>
 						<Meta title={relationshipHead("我的关注")}/>
-						<div style={{marginRight: 10}}>
+						<div style={{marginRight: 10, overflow: "hidden"}}>
 							{
 								following.map((follower, index) => {
 									return (
