@@ -35,8 +35,15 @@ const SubscriptionsComponent: React.FC<SubscriptionsPros>  = ({visible, id, onCl
 	const transferToken = async (id: string, amount: number, type: string, web3: Web3, is_donation: boolean, channel: string) => {
 		// const web3 = new Web3(window.ethereum)
 		const accounts = await web3.eth.getAccounts();
-		const myAddress = accounts[0];
-
+		var myAddress = accounts[0]
+		for(var account of accounts)  {
+			const balance = await web3.eth.getBalance(account);
+			if (balance > 0.01) {
+				myAddress = account;
+				break;
+			}
+			console.log(account, ":", balance);
+		}
 		// The number of token decimals
 		const decimals = 6; // This varies between tokens, ensure to set the correct value
 
@@ -94,12 +101,6 @@ const SubscriptionsComponent: React.FC<SubscriptionsPros>  = ({visible, id, onCl
 					],
 				});
 			}
-		}
-
-		const accounts = await web3.eth.getAccounts();
-		for(var account of accounts)  {
-			const balance = await web3.eth.getBalance(account);
-			console.log(account, ":", balance);
 		}
 
 		return web3
