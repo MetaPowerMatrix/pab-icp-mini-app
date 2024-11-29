@@ -2,7 +2,7 @@ export const tokenAbi = [{"inputs":[{"internalType":"string","name":"name","type
 export const tokenContractAddress = "0xD6311f9A6bd3a802263F4cd92e2729bC2C31Ed23"
 export const recipientAddress = '0x40B92673B50d4cA94AAF38007fCf12B7D24abe48'
 export const ticketRecipientAddress = '0x5C98D79e6Ce7299a2Ea84B2898eAF064038AA1f3'
-export const metamaskDeepLink = 'https://metamask.app.link/send/0xD6311f9A6bd3a802263F4cd92e2729bC2C31Ed23/transfer?address=0x40B92673B50d4cA94AAF38007fCf12B7D24abe48&uint256=2e7'
+export const metamaskDeepLink = 'https://metamask.app.link/send/0xD6311f9A6bd3a802263F4cd92e2729bC2C31Ed23@56/transfer?address=0x40B92673B50d4cA94AAF38007fCf12B7D24abe48&uint256=2e7'
 export const host = "icp.metapowermatrix.ai"
 export const Web_Server = "https://"+ host
 export const Streaming_Server = "wss://ws.metapowermatrix.ai"

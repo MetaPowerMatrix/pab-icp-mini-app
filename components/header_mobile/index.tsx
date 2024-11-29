@@ -63,6 +63,9 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 		command.getPredefinedTags().then((resp)=>{
 			setPredefinedTags(resp)
 		})
+		command.queryPatoKolToken(activeId).then((res)=>{
+			console.log("confirm kol token", res)
+		})
 	}, [])
 
 	useEffect(() => {
