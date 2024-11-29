@@ -4,7 +4,7 @@ import {useTranslations} from "next-intl";
 import {metamaskDeepLink, tokenAbi, tokenContractAddress} from "@/common";
 import commandDataContainer from "@/container/command";
 import Web3 from "web3";
-import {getOS, getRawOS} from "@/lib/utils";
+import {getRawOS} from "@/lib/utils";
 
 interface SubscriptionsPros {
 	id: string,
