@@ -4,7 +4,7 @@ import {useTranslations} from "next-intl";
 import {metamaskDeepLink, tokenAbi, tokenContractAddress} from "@/common";
 import commandDataContainer from "@/container/command";
 import Web3 from "web3";
-import {getOS} from "@/lib/utils";
+import {getOS, getRawOS} from "@/lib/utils";
 
 interface SubscriptionsPros {
 	id: string,
@@ -128,7 +128,7 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 				content: t("requireAmount")
 			})
 		}else{
-			let OS = getOS()
+			let OS = getRawOS()
 			if (OS === 'iphone' || OS === 'android'){
 				window.open(metamaskDeepLink)
 			}else{
