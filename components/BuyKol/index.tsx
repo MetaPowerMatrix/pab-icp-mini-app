@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Col, Divider, Modal, Row} from "antd";
 import {useTranslations} from "next-intl";
-import {tokenAbi, tokenContractAddress} from "@/common";
+import {metamaskDeepLink, tokenAbi, tokenContractAddress} from "@/common";
 import commandDataContainer from "@/container/command";
 import Web3 from "web3";
+import {getOS} from "@/lib/utils";
 
 interface SubscriptionsPros {
 	id: string,
@@ -43,8 +44,15 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 	const transferToken = async (id: string, amount: number, web3: Web3) => {
 		// const web3 = new Web3(window.ethereum)
 		const accounts = await web3.eth.getAccounts();
-		const myAddress = accounts[0];
-
+		var myAddress = accounts[0]
+		for(var account of accounts)  {
+			const balance = await web3.eth.getBalance(account);
+			if (balance > 0.01) {
+				myAddress = account;
+				break;
+			}
+			console.log(account, ":", balance);
+		}
 		// The number of token decimals
 		const decimals = 6; // This varies between tokens, ensure to set the correct value
 
@@ -105,12 +113,6 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 			}
 		}
 
-		const accounts = await web3.eth.getAccounts();
-		for(var account of accounts)  {
-			const balance = await web3.eth.getBalance(account);
-			console.log(account, ":", balance);
-		}
-
 		return web3
 	}
 	const deposit = (id: string, amount: number, is_donation:boolean) => {
@@ -126,7 +128,12 @@ const BuyKolComponent: React.FC<SubscriptionsPros>  = ({id, onClose, buyWhat, ro
 				content: t("requireAmount")
 			})
 		}else{
-			deposit(id, amount, false)
+			let OS = getOS()
+			if (OS === 'iphone' || OS === 'android'){
+				window.open(metamaskDeepLink)
+			}else{
+				deposit(id, amount, false)
+			}
 		}
 	};
 
