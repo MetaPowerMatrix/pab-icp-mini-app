@@ -53,7 +53,7 @@ const useCommand = () => {
         return dataJson.content
       }
     }
-    return '/images/chunxiao.jpg'
+    return ''
   }
   const getPredefinedTags = async () => {
     let url = getApiServer(80) + api_url.portal.tags

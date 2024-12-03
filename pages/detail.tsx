@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useTranslations} from 'next-intl';
 import LayoutMobile from "@/components/layout_mobile";
 
-export default function MobileHome() {
+export default function TopicDetail() {
 	const [activeId, setActiveId] = useState("");
 	const [activeName, setActiveName] = useState<string>("")
 	const t = useTranslations('Index');
