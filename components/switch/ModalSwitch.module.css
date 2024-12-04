@@ -1,0 +1,36 @@
+.modal {
+    width: 100%;
+    max-width: 440px;
+    height: 720px;
+    overflow: hidden;
+    background-image: url('/images/login.jpg');
+    background-size: cover;
+    padding: 20px;
+}
+
+.modal_content_mobile {
+    padding: 20px;
+    margin-top: 210px;
+}
+
+.button {
+    margin-top: 65px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: transparent;
+    border: 0px solid white;
+    color: white;
+}
+.create_button {
+    margin-top: 85px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 0px solid white;
+    color: black;
+}
+
+.form_group {
+    margin-bottom: 20px;
+}

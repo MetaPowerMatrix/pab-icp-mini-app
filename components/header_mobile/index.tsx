@@ -135,6 +135,9 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 	const toLogin = () => {
 		router.push('/login');
 	};
+	const toSwitch = () => {
+		router.push('/switch');
+	};
 
 	return (
 		<header className={styles.header_panel_mobile_container}>
@@ -202,11 +205,10 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 						<UploadOutlined onClick={handleSubmitTags} style={{marginLeft: 10, color: "white", marginRight: 10}}/>
 					</div>
 					<div style={{padding: 20}}>
-						<TagsComponent presetTags={myTags} height={100} tags={myTags} myTags={(tags) => {
+						<TagsComponent presetTags={myTags} height={67} tags={myTags} myTags={(tags) => {
 							setMyTags(tags)
 						}}/>
 					</div>
-					<Divider/>
 					<div className={styles.info_container}>
 						<Meta title={awardHead()}/>
 						<div>
@@ -243,9 +245,9 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 							}}/>
 						</div>
 					</div>
-					<Row style={{padding: 10}}>
+					<Row style={{padding: 8}}>
 						<Col span={24}>
-							<Button style={{width: "100%", borderRadius:25, backgroundColor: "white", color:"black"}} onClick={toLogin}>切换账号</Button>
+							<Button style={{width: "100%", borderRadius:25, backgroundColor: "white", color:"black"}} onClick={toSwitch}>切换账号</Button>
 						</Col>
 					</Row>
 				</Card>
