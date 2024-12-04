@@ -11,9 +11,7 @@ export default function MobileHome() {
 	const t = useTranslations('Index');
 
 	return (
-		<LayoutMobile showTabs={true} onRefresh={(name: string) => setActiveName(name)}
-		              title={t('title')}
-		              description={t('description')}>
+		<LayoutMobile showTabs={true} onRefresh={(name: string) => setActiveName(name)} title={t('title')} description={t('description')}>
 			{contextHolder}
 		</LayoutMobile>
 	)

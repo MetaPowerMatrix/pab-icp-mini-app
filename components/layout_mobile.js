@@ -23,10 +23,6 @@ export default function LayoutMobile({children, title, description, onRefresh, s
     const [start, setStart] = useState(false);
     const t = useTranslations('Login');
 
-    const toLogin = () => {
-        router.push('/login');
-    };
-
     const process_ws_message = (event) => {
         if (event.data.toString() !== 'pong') {
             setQuery(event.data.toString())
@@ -89,9 +85,7 @@ export default function LayoutMobile({children, title, description, onRefresh, s
                 {/*    <TownMobile ctrlVoiceStart={stop_record} query={query} name={activeName} id={activeId} onShowProgress={showProgressBar} />*/}
                 {/*}*/}
                 {key === 'mine' &&
-                    <HeaderPanelMobile
-                        activeId={activeId} onChangeId={toLogin}
-                    />
+                    <HeaderPanelMobile activeId={activeId}/>
                 }
             </>
         )

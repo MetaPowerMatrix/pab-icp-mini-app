@@ -7,9 +7,7 @@ export default function TopicDetail() {
 	const t = useTranslations('Index');
 
 	return (
-		<LayoutMobile showTabs={false} onRefresh={(name: string) => setActiveName(name)}
-		              title={t('title')}
-		              description={t('description')}>
+		<LayoutMobile showTabs={false} onRefresh={(name: string) => setActiveName(name)} title={t('title')} description={t('description')}>
 			<></>
 		</LayoutMobile>
 	)

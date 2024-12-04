@@ -18,6 +18,7 @@ import SlidePanel from "@/components/SlidePanel";
 import KOLListComponent from "@/components/KOL";
 import {doMd5Sum} from "@/lib/utils";
 import ProgressBarComponent from "@/components/ProgressBar";
+import {useRouter} from "next/router";
 
 const awardHead = ()=>{
 	return(
@@ -36,8 +37,7 @@ const relationshipHead = (title: string)=>{
 		</>
 	)
 }
-const HeaderPanelMobile = ({activeId, onChangeId}:
-   {activeId:string, onChangeId: (s: boolean)=>void}) =>
+const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 {
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const command = commandDataContainer.useContainer()
@@ -57,6 +57,7 @@ const HeaderPanelMobile = ({activeId, onChangeId}:
 	const [popContent, setPopContent] = useState<string>("become_kol")
 	const [loading, setLoading] = useState(false);
 	const t = useTranslations('Login');
+	const router = useRouter();
 
 	useEffect(()=>{
 		command.getPredefinedTags().then((resp)=>{
@@ -129,6 +130,10 @@ const HeaderPanelMobile = ({activeId, onChangeId}:
 	};
 	const handleOpenChange = (newOpen: boolean) => {
 		setOpenPop(newOpen);
+	};
+
+	const toLogin = () => {
+		router.push('/login');
 	};
 
 	return (
@@ -240,7 +245,7 @@ const HeaderPanelMobile = ({activeId, onChangeId}:
 					</div>
 					<Row style={{padding: 10}}>
 						<Col span={24}>
-							<Button style={{width: "100%", borderRadius:25, backgroundColor: "white", color:"black"}} onClick={() => onChangeId(false)}>切换账号</Button>
+							<Button style={{width: "100%", borderRadius:25, backgroundColor: "white", color:"black"}} onClick={toLogin}>切换账号</Button>
 						</Col>
 					</Row>
 				</Card>

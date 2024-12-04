@@ -10,7 +10,6 @@ import {useGSAP} from "@gsap/react";
 import {PatoInfo, TopicInfo} from "@/common";
 import commandDataContainer from "@/container/command";
 import {Drawer, Switch} from "antd";
-import Link from "next/link";
 import { useRouter } from 'next/router';
 
 // Define types for ref elements
@@ -65,7 +64,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 				</div>
 				<div style={{display: "flex"}}>
 					<div className={styles.search}><SearchOutlined/></div>
-					<Link href={"/detail"} ><div className={styles.notification}><PlusOutlined/></div></Link>
+					<div className={styles.notification}><PlusOutlined  onClick={toTopic}/></div>
 				</div>
 				</div>
 
