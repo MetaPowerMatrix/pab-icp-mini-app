@@ -5,14 +5,14 @@ export const ticketRecipientAddress = '0x5C98D79e6Ce7299a2Ea84B2898eAF064038AA1f
 export const metamaskDeepLink = 'https://metamask.app.link/send/pay-0xD6311f9A6bd3a802263F4cd92e2729bC2C31Ed23@56/transfer?address=0x40B92673B50d4cA94AAF38007fCf12B7D24abe48&uint256=2e7'
 export const host = "icp.metapowermatrix.ai"
 export const Web_Server = "https://"+ host
-export const Streaming_Server = "wss://ws.metapowermatrix.ai"
+export const Streaming_Server = "wss://wschat.metapowermatrix.ai"
 export const llm_Server = "wss://wschat.metapowermatrix.ai"
 export const getApiServer = (port: number) => {
   // return Web_Server + ':' + port
   return Web_Server
 }
 export const getMQTTBroker = () => {
-  return "wss://ws.metapowermatrix.ai/mqtt"
+  return "wss://wschat.metapowermatrix.ai/mqtt"
 }
 
 export interface ChatMessage {
