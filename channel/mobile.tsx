@@ -6,13 +6,12 @@ import {useTranslations} from 'next-intl';
 import LayoutMobile from "@/components/layout_mobile";
 
 export default function MobileHome() {
-	const [activeId, setActiveId] = useState("");
 	const [activeName, setActiveName] = useState<string>("")
 	const [api, contextHolder] = notification.useNotification();
 	const t = useTranslations('Index');
 
 	return (
-		<LayoutMobile showTabs={true} onRefresh={(name: string) => setActiveName(name)} onChangeId={(newId: string) => setActiveId(newId)}
+		<LayoutMobile showTabs={true} onRefresh={(name: string) => setActiveName(name)}
 		              title={t('title')}
 		              description={t('description')}>
 			{contextHolder}
