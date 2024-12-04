@@ -6,35 +6,26 @@ import {
     CommentOutlined, HomeOutlined,
 } from "@ant-design/icons";
 import React, {useEffect, useState} from 'react';
-import ModalLogin from "@/components/login";
 import {useTranslations} from 'next-intl';
-import ProgressBarComponent from "@/components/ProgressBar";
 import HeaderPanelMobile from "./header_mobile";
 import AIVoice from "@/components/AIVoice";
 import MobileFramework from "@/components/MobileFramework";
-import SplashScreen from "@/components/SplashScreen";
 import HomePage from "@/components/HomePage";
 import DetailPage from "@/components/DetailPage";
 
-export default function LayoutMobile({children, title, description, onChangeId, onRefresh, showTabs }) {
+export default function LayoutMobile({children, title, description, onRefresh, showTabs }) {
     const [availableIds, setAvailableIds] = useState([]);
-    const [isLogin, setIsLogin] = useState(false);
     const [activeId, setActiveId] = useState("");
     const [activeName, setActiveName] = useState("");
-    const [loading, setLoading] = useState(false);
     const [activeTab, setActivTab] = useState('home');
     const [query, setQuery] = useState("");
     const [notify, setNotify] = useState("")
     const [start, setStart] = useState(false);
-    const [showSplash, setShowSplash] = useState(true);
     const t = useTranslations('Login');
 
-    const showProgressBar = (show) => {
-        setLoading(show)
-    }
-    const changeLoginState = (status) =>{
-        setIsLogin(status);
-    }
+    const toLogin = () => {
+        router.push('/login');
+    };
 
     const process_ws_message = (event) => {
         if (event.data.toString() !== 'pong') {
@@ -50,20 +41,12 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            setShowSplash(false)
-        }, 2000)
-    }, [])
-
-    useEffect(() => {
         const localInfoStr = localStorage.getItem("local_patos")
         if (localInfoStr === null) {
-            setIsLogin(false);
+            toLogin()
         }else {
             const localInfo = JSON.parse(localInfoStr)
             setActiveId(localInfo.active_id);
-            onChangeId(localInfo.active_id);
-            setIsLogin(true);
             const ids = localInfo.ids;
             const idsMap = ids.map((id) => {
                 const id_name = id.split(":")
@@ -86,23 +69,6 @@ export default function LayoutMobile({children, title, description, onChangeId, 
         }
     },[activeId]);
 
-    useEffect(() => {
-        if (activeId !== ''){
-            const currentUrl = window.location.search;
-            const searchParams = new URLSearchParams(currentUrl);
-            const paramName = 'to';
-            const to_page = searchParams.get(paramName);
-            console.log(to_page);
-            if (to_page === 'kol'){
-                setActivTab("town")
-            }
-            if (to_page === 'accept' && isLogin){
-                const back = searchParams.get('back')
-                window.location.href = decodeURI(back);
-            }
-        }
-    }, [activeId])
-
     const tabs =[
         {label: '首页', key:"home", icon: <HomeOutlined/>},
         {label: t('messages'), key:"chat", icon: <CommentOutlined/>},
@@ -124,8 +90,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 {/*}*/}
                 {key === 'mine' &&
                     <HeaderPanelMobile
-                        onShowProgress={showProgressBar}
-                        activeId={activeId} onChangeId={changeLoginState}
+                        activeId={activeId} onChangeId={toLogin}
                     />
                 }
             </>
@@ -141,55 +106,34 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 <meta name="viewport" content="width=device-width, user-scalable=0, interactive-widget=overlays-content, initial-scale=1"/>
             </Head>
             {
-                showSplash ? <SplashScreen/> :
-                    isLogin ?
-                            <>
-                                <AIVoice onReply={receive_notify} activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
-                                {showTabs ?
-                                    <Tabs
-                                        destroyInactiveTabPane={true}
-                                        tabBarGutter={80}
-                                        tabBarStyle={{backgroundColor: 'black', marginTop: 0}}
-                                        centered
-                                        size={"small"}
-                                        type={"line"}
-                                        animated={true}
-                                        tabPosition="bottom"
-                                        activeKey={activeTab}
-                                        onChange={(key)=>setActivTab(key)}
-                                        items={tabs.map((tab) => {
-                                            return {
-                                                label: tab.label,
-                                                key: tab.key,
-                                                children: content(tab.key),
-                                                icon:tab.icon
-                                            };
-                                        })}
-                                    />
-                                    :
-                                    <DetailPage ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
-                                }
-                            </>
-                            :
-                            null
-            }
-
-            <ProgressBarComponent visible={loading} steps={15} />
-            <ModalLogin showSplash={showSplash} isOpen={!isLogin} tips={t} options={availableIds}
-                onClose={(id) => {
-                    setIsLogin(true)
-                    if (id !== '') {
-                        setActiveId(id)
-                        const localInfoStr = localStorage.getItem("local_patos")
-                        if (localInfoStr !== null) {
-                            let localInfo = JSON.parse(localInfoStr)
-                            localInfo.active_id = id
-                            localStorage.setItem("local_patos", JSON.stringify(localInfo))
-                            setActiveId(localInfo.active_id);
-                        }
+                <>
+                    <AIVoice onReply={receive_notify} activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
+                    {showTabs ?
+                        <Tabs
+                            destroyInactiveTabPane={true}
+                            tabBarGutter={80}
+                            tabBarStyle={{backgroundColor: 'black', marginTop: 0}}
+                            centered
+                            size={"small"}
+                            type={"line"}
+                            animated={true}
+                            tabPosition="bottom"
+                            activeKey={activeTab}
+                            onChange={(key)=>setActivTab(key)}
+                            items={tabs.map((tab) => {
+                                return {
+                                    label: tab.label,
+                                    key: tab.key,
+                                    children: content(tab.key),
+                                    icon:tab.icon
+                                };
+                            })}
+                        />
+                        :
+                        <DetailPage ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
                     }
-                }}
-            />
+                </>
+            }
         </div>
     );
 }

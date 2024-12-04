@@ -17,6 +17,7 @@ import TagsComponent from "@/components/tags";
 import SlidePanel from "@/components/SlidePanel";
 import KOLListComponent from "@/components/KOL";
 import {doMd5Sum} from "@/lib/utils";
+import ProgressBarComponent from "@/components/ProgressBar";
 
 const awardHead = ()=>{
 	return(
@@ -35,11 +36,8 @@ const relationshipHead = (title: string)=>{
 		</>
 	)
 }
-const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
-   {activeId:string,
-	   onShowProgress: (s: boolean)=>void,
-	   onChangeId: (s: boolean)=>void,
-	 }) =>
+const HeaderPanelMobile = ({activeId, onChangeId}:
+   {activeId:string, onChangeId: (s: boolean)=>void}) =>
 {
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const command = commandDataContainer.useContainer()
@@ -57,6 +55,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const [followers, setFollowers] = useState<PortalHotAi[]>([])
 	const [following, setFollowing] = useState<string[]>([])
 	const [popContent, setPopContent] = useState<string>("become_kol")
+	const [loading, setLoading] = useState(false);
 	const t = useTranslations('Login');
 
 	useEffect(()=>{
@@ -118,12 +117,12 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	}, [myKol]);
 
 	const handleSubmitTags = () => {
-		onShowProgress(true)
+		setLoading(true)
 		let session = doMd5Sum(activeId + Date.now().toLocaleString())
 		command.submit_pato_tags(myTags, activeId, session).then((resp)=>{
 			// setAvatar(resp)
 			setTimeout(()=>{
-				onShowProgress(false)
+				setLoading(false)
 				setReload(reload+1)
 			}, 20000)
 		})
@@ -246,6 +245,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					</Row>
 				</Card>
 			</div>
+			<ProgressBarComponent visible={loading} steps={15}/>
 			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
 				{
 					popContent === "become_kol" &&

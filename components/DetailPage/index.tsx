@@ -5,7 +5,7 @@ import {useSwipe} from "../UseSwipe";
 import AIChat from "../AIChat";
 import React, {useEffect, useState} from "react";
 import {ChatMessage} from "@/common";
-import Link from "next/link";
+import { useRouter } from 'next/router';
 
 interface DetailPageProps {
     activeId: string;
@@ -19,6 +19,7 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
     const [queryText, setQueryText] = useState<string>(query)
     const [sendQuery, setSendQuery] = useState<string>('')
     const [messages, setMessages] = useState<ChatMessage[]>([])
+    const router = useRouter();
 
     useEffect(() => {
         setQueryText(query)
@@ -66,11 +67,13 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
         },
     });
 
+    const toHome = () => {
+        router.push('/home');
+    };
+
     return (
         <div className={styles.content}>
-            <Link href={"/"} style={{color: "white"}}>
-                <ArrowLeftOutlined style={{margin:10, fontSize: 16}}/>
-            </Link>
+            <ArrowLeftOutlined onClick={toHome}  style={{margin:10, fontSize: 16}}/>
             <div className={styles.input_section}>
                 <textarea value={queryText} placeholder="那么，说说你的想法..." rows={3}
                           className={styles.prompt_input}

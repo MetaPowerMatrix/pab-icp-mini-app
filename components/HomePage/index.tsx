@@ -11,15 +11,14 @@ import {PatoInfo, TopicInfo} from "@/common";
 import commandDataContainer from "@/container/command";
 import {Drawer, Switch} from "antd";
 import Link from "next/link";
+import { useRouter } from 'next/router';
 
 // Define types for ref elements
 interface HomePageProps {
 	activeId: string;
-	query: string;
-	ctrlVoiceStart: (startStop: boolean)=>void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) => {
+const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 	const upgradeRef = useRef<HTMLDivElement>(null);
 	const trendingVideoRef = useRef<HTMLDivElement>(null);
 	const [avatar, setAvatar] = useState('/images/notlogin.png')
@@ -27,6 +26,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 	const [open, setOpen] = useState(false);
 	const [topics, setTopics] = useState<TopicInfo[]>([])
 	const command = commandDataContainer.useContainer()
+	const router = useRouter();
 
 	useEffect(() => {
 		command.getPatoInfo(activeId).then((res): void => {
@@ -51,6 +51,9 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 
 	const onClose = () => {
 		setOpen(false);
+	};
+	const toTopic = () => {
+			router.push('/topic');
 	};
 
 	return (
@@ -89,7 +92,7 @@ const HomePage: React.FC<HomePageProps> = ({activeId, query, ctrlVoiceStart}) =>
 									<h5>C: 没钱</h5>
 									<h5>D: 同问</h5>
 								</ul>
-								<Link href={"/detail"} ><button className={styles.upgrade_btn}>发起话题</button></Link>
+								<button onClick={toTopic} className={styles.upgrade_btn}>发起话题</button>
 							</div>
 						</div>
 					</div>

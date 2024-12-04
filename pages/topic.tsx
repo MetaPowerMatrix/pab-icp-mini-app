@@ -3,12 +3,11 @@ import {useTranslations} from 'next-intl';
 import LayoutMobile from "@/components/layout_mobile";
 
 export default function TopicDetail() {
-	const [activeId, setActiveId] = useState("");
 	const [activeName, setActiveName] = useState<string>("")
 	const t = useTranslations('Index');
 
 	return (
-		<LayoutMobile showTabs={false} onRefresh={(name: string) => setActiveName(name)} onChangeId={(newId: string) => setActiveId(newId)}
+		<LayoutMobile showTabs={false} onRefresh={(name: string) => setActiveName(name)}
 		              title={t('title')}
 		              description={t('description')}>
 			<></>

@@ -1,7 +1,46 @@
 import styles from "./SplashScreen.module.css"
-import React from "react";
+import React, {useEffect} from "react";
+import { useRouter } from 'next/router';
 
 const SplashScreen = () => {
+	const router = useRouter();
+
+	const toIntro = () => {
+		setTimeout(() => {
+			router.push('/intro');
+		}, 2000)
+	};
+	const toHome = () => {
+		setTimeout(() => {
+			router.push('/home');
+		}, 2000)
+	};
+
+	useEffect(() => {
+		return () => {
+			console.log("Cleaning up or unmounting current page...");
+		};
+	}, []);
+
+	useEffect(() => {
+		const localInfoStr = localStorage.getItem("local_patos")
+		if (localInfoStr === null) {
+			toIntro()
+		}else {
+			const localInfo = JSON.parse(localInfoStr)
+			if (localInfo.active_id === '') {
+				toIntro()
+			}else{
+				toHome()
+			}
+		}
+
+		// const currentUrl = window.location.search;
+		// const searchParams = new URLSearchParams(currentUrl);
+		// const paramName = 'to';
+		// const to_page = searchParams.get(paramName);
+		// console.log(to_page);
+	},[]);
 
 	return (
 		<div className={styles.modal}>

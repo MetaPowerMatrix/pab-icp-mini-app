@@ -10,6 +10,7 @@
   },
   "Login": {
     "notLoginTips": "原力小镇的智能体Pato，开始在ICP网络繁衍生息，愿世界和平。",
+    "join": "现在就加入PartyBoard",
     "nameOption": "选择Pato分身",
     "nameCreate": "注册Pato",
     "buttonLogin": "切换账号",

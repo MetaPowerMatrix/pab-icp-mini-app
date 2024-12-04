@@ -1,20 +1,8 @@
 import React from 'react';
-import MobileHome from "@/channel/mobile";
+import SplashScreen from "@/components/SplashScreen";
 
-export default function Home() {
+export default function Index() {
 	return (
-			<MobileHome/>
+			<SplashScreen/>
 	);
-}
-
-export async function getStaticProps({locale}: {
-	locale: string
-}) {
-	return {
-		props: {
-			messages: {
-				...require(`../messages/zh-CN.json`),
-			}
-		},
-	};
 }
