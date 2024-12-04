@@ -6,7 +6,7 @@ import {useTranslations} from "next-intl";
 import {ExclamationCircleFilled} from "@ant-design/icons";
 import ProgressBarComponent from "../ProgressBar";
 
-function ModalLogin({ isOpen, showSplash, onClose, tips, options}) {
+function ModalLogin({onClose, tips}) {
 	const [username, setUsername] = useState('');
 	const command = commandDataContainer.useContainer()
 	const [loading, setLoading] = useState(false);
@@ -50,28 +50,10 @@ function ModalLogin({ isOpen, showSplash, onClose, tips, options}) {
 		setUsername(event.target.value)
 	}
 
-	if (!isOpen || showSplash) return null;
-
 	return (
 		<>
 			<div className={styles.modal}>
 				<div className={styles.modal_content_mobile}>
-					{/*<div className={styles.form_group}>*/}
-					{/*	<Row align={"middle"}>*/}
-					{/*		<Col span={16}>*/}
-					{/*			<select style={{padding:10, width:"100%"}} id="userid" name="userid" onChange={userIdChange}>*/}
-					{/*				{options.map((option) => (*/}
-					{/*					<option key={option.value} value={option.value}>*/}
-					{/*						{option.label}*/}
-					{/*					</option>*/}
-					{/*				))}*/}
-					{/*			</select>*/}
-					{/*		</Col>*/}
-					{/*		<Col span={8} style={{textAlign:"end"}}>*/}
-					{/*			<Button type={"primary"} onClick={handleLogin}>{tips('buttonLogin')}</Button>*/}
-					{/*		</Col>*/}
-					{/*	</Row>*/}
-					{/*</div>*/}
 					<input placeholder={tips('loginCreate')} style={{padding: 10, width: "100%"}} id="username"
 						   name="username" onChange={usernameInput}/>
 					<button className={styles.button} onClick={handleRegister}>{tips('buttonRegister')}</button>

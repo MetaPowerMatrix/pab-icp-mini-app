@@ -4,8 +4,7 @@ import styles from './MobileFramework.module.css';
 import {
     AudioOutlined, DiscordOutlined, FileImageOutlined,
     PauseOutlined, PlusOutlined, SaveOutlined, SearchOutlined,
-    SendOutlined,
-    TagsOutlined, TeamOutlined, UploadOutlined
+    SendOutlined, TagsOutlined, TeamOutlined
 } from "@ant-design/icons";
 import {Button, Col, GetProp, Modal, Popover, Row, Tag, Upload, UploadFile, UploadProps} from "antd";
 import commandDataContainer from "../../container/command";

@@ -29,10 +29,8 @@ export default function LoginPage() {
 					return {label: id.split(":")[1], value: id.split(":")[0]};
 				}
 			});
-			// console.log(idsMap)
 			idsMap.unshift({label:'请选择',value:'tips'})
 			setAvailableIds(idsMap);
-			// command.log_user_activity(localInfo.active_id, "home", "login").then(()=>{})
 		}
 	},[]);
 

@@ -19,7 +19,7 @@ export default function LoginPage() {
 
 	return(
 		<>
-			<ModalLogin isOpen={true} onClose={()=> toHome()} showSplash={false} tips={t} options={[]}/>
+			<ModalLogin onClose={()=> toHome()} tips={t}/>
 		</>
 	)
 }

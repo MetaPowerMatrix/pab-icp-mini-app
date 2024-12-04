@@ -132,9 +132,6 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 		setOpenPop(newOpen);
 	};
 
-	const toLogin = () => {
-		router.push('/login');
-	};
 	const toSwitch = () => {
 		router.push('/switch');
 	};
