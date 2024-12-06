@@ -1,7 +1,7 @@
 .modal {
     width: 100%;
     max-width: 440px;
-    height: 720px;
+    height: 730px;
     overflow: hidden;
     background-image: url('/images/appintro.jpg');
     background-size: cover;

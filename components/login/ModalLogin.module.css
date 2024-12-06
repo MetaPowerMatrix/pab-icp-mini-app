@@ -1,7 +1,7 @@
 .modal {
     width: 100%;
     max-width: 440px;
-    height: 720px;
+    height: 730px;
     overflow: hidden;
     background-image: url('/images/login.jpg');
     background-size: cover;
@@ -14,7 +14,7 @@
 }
 
 .button {
-    margin-top: 85px;
+    margin-top: 95px;
     width: 100%;
     padding: 10px;
     border-radius: 15px;

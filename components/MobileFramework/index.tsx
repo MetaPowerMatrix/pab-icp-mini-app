@@ -299,74 +299,8 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                   <div className={styles.style_options}>
                       <Row align="middle">
                           <Col span={2}>
-                              <SaveOutlined style={{color: "black", fontSize: 14}}
-                                            onClick={saveMessageToIcp}/>
-                          </Col>
-                          <Col span={1}>
-                              <Popover
-                                placement={"bottomLeft"}
-                                content={
-                                    <div style={{width: 270}}>
-                                        <PatosComponent patos={patos} height={160}
-                                            myTags={(tags) => {
-                                                setGameRound(false)
-                                                setQueryText("@"+tags.join(" @"))
-                                                setSelectedPatos(tags)
-                                            }}
-                                            myIds={(ids) => {
-                                                setAtIds(ids)
-                                            }}
-                                        />
-                                    </div>
-                                }
-                                trigger="click"
-                                open={openTeam}
-                                onOpenChange={handleOpenTeamChange}
-                              >
-                                  <TeamOutlined style={{color: "black", fontSize: 14}}/>
-                              </Popover>
-                          </Col>
-                          <Col span={9}>
-                              <Popover
-                                placement={"bottomLeft"}
-                                content={
-                                    <div style={{width: 270}}>
-                                        <TagsComponent presetTags={[]} tags={aiCharacterTags} myTags={(tags) => { setSelectedTags(tags) }}/>
-                                    </div>
-                                }
-                                trigger="click"
-                                open={openPop}
-                                onOpenChange={handleOpenChange}
-                              >
-                                  <TagsOutlined style={{marginLeft: 10, fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-                                  {
-                                      selectedTags.map((tag, index) => {
-                                          return (
-                                            <span key={index} style={{
-                                                color: "#eeb075",
-                                                fontSize: 12,
-                                                marginLeft: 5
-                                            }}>{tag}</span>
-                                          )
-                                      })
-                                  }
-                              </Popover>
-                          </Col>
-                          <Col span={2}>
                               <DiscordOutlined style={{color: "black", fontSize: 14}}
-                                            onClick={playGame}/>
-                          </Col>
-                          <Col span={2}>
-                              <SearchOutlined style={{color: "black", fontSize: 14}}
-                                            onClick={sendQueryKnowledgeMessage}/>
-                          </Col>
-                          <Col span={2}>
-                              {stopped ?
-                                <AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
-                                :
-                                <PauseOutlined style={{color: "black", fontSize: 14}}
-                                               onClick={() => stop_record()}/>
-                              }
+                                               onClick={playGame}/>
                           </Col>
                           <Col span={2}>
                               <FileImageOutlined onClick={(e)=>{
@@ -383,6 +317,72 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                               <Upload id="upload-input" maxCount={1} showUploadList={false} {...props}>
                                   <Button style={{display: "none"}}></Button>
                               </Upload>
+                          </Col>
+                          <Col span={2}>
+                              <SearchOutlined style={{color: "black", fontSize: 14}}
+                                              onClick={sendQueryKnowledgeMessage}/>
+                          </Col>
+                          <Col span={2}>
+                              {stopped ?
+                                <AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
+                                :
+                                <PauseOutlined style={{color: "black", fontSize: 14}}
+                                               onClick={() => stop_record()}/>
+                              }
+                          </Col>
+                          {/*<Col span={2}>*/}
+                          {/*    <SaveOutlined style={{color: "black", fontSize: 14}}*/}
+                          {/*                  onClick={saveMessageToIcp}/>*/}
+                          {/*</Col>*/}
+                          <Col span={2}>
+                              <Popover
+                                placement={"bottom"}
+                                content={
+                                    <div style={{width: 270}}>
+                                        <PatosComponent patos={patos} height={160}
+                                                        myTags={(tags) => {
+                                                            setGameRound(false)
+                                                            setQueryText("@"+tags.join(" @"))
+                                                            setSelectedPatos(tags)
+                                                        }}
+                                                        myIds={(ids) => {
+                                                            setAtIds(ids)
+                                                        }}
+                                        />
+                                    </div>
+                                }
+                                trigger="click"
+                                open={openTeam}
+                                onOpenChange={handleOpenTeamChange}
+                              >
+                                  <TeamOutlined style={{color: "black", fontSize: 14}}/>
+                              </Popover>
+                          </Col>
+                          <Col span={10}>
+                              <Popover
+                                placement={"bottom"}
+                                content={
+                                    <div style={{width: 270}}>
+                                        <TagsComponent presetTags={[]} tags={aiCharacterTags} myTags={(tags) => { setSelectedTags(tags) }}/>
+                                    </div>
+                                }
+                                trigger="click"
+                                open={openPop}
+                                onOpenChange={handleOpenChange}
+                              >
+                                  <TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
+                                  {
+                                      selectedTags.map((tag, index) => {
+                                          return (
+                                            <span key={index} style={{
+                                                color: "#eeb075",
+                                                fontSize: 12,
+                                                marginLeft: 5
+                                            }}>{tag}</span>
+                                          )
+                                      })
+                                  }
+                              </Popover>
                           </Col>
                           <Col span={1}>
                               <SendOutlined style={{color: "black", fontSize: 14, marginLeft: 10}}
