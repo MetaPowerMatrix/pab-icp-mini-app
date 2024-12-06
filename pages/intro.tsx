@@ -1,6 +1,7 @@
 import {useTranslations} from "next-intl";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import PitchPage from "@/components/Pitch";
+import Head from "next/head";
 
 export default function AppInfo() {
 	const t = useTranslations('Login');
@@ -13,6 +14,12 @@ export default function AppInfo() {
 
 	return(
 		<>
+			<Head>
+				<link rel="icon" href="/favicon.ico"/>
+				<meta name="description" content={t('description')}/>
+				<meta name="og:title" content={t('title')}/>
+				<meta name="viewport" content="width=device-width, user-scalable=0, interactive-widget=overlays-content, initial-scale=1"/>
+			</Head>
 			<PitchPage tips={t}/>
 		</>
 	)

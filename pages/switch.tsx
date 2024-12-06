@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import {useTranslations} from "next-intl";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ModalSwitch from "@/components/switch";
+import Head from "next/head";
 
 export default function LoginPage() {
 	const router = useRouter();
@@ -36,6 +37,12 @@ export default function LoginPage() {
 
 	return(
 		<>
+			<Head>
+				<link rel="icon" href="/favicon.ico"/>
+				<meta name="description" content={t('description')}/>
+				<meta name="og:title" content={t('title')}/>
+				<meta name="viewport" content="width=device-width, user-scalable=0, interactive-widget=overlays-content, initial-scale=1"/>
+			</Head>
 			<ModalSwitch tips={t} options={availableIds}
         onClose={(id: any) => {
           if (id !== '') {
