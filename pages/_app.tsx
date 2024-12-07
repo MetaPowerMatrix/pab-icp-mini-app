@@ -1,11 +1,10 @@
-import "@/styles/global.css";
 import type { AppProps } from "next/app";
 import CommandDataContainer from "@/container/command";
 import {NextIntlClientProvider} from 'next-intl';
-import {useRouter} from 'next/router';
+import "antd/lib/tabs/style/index";
+import "@/styles/global.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
 
   return (
     <NextIntlClientProvider
