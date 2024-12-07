@@ -69,23 +69,61 @@ const useCommand = () => {
     }
     return []
   }
-  const getTopicHots = async () => {
-    let url = getApiServer(80) + api_url.portal.message.hot_topics
+  const getContent = async (uri: string) => {
+    let url = getApiServer(80) + uri
     try {
       let response = await fetch(`${url}`,)
       if (response.ok) {
         let dataJson = await response.json()
-        let topics: string[] = JSON.parse(dataJson.content)
-        return topics
+        return dataJson.content
       }
     }catch (e) {
       console.log(e)
     }
     return []
   }
+  const getJsonObject = async (uri: string) => {
+    let url = getApiServer(80) + uri
+    try {
+      let response = await fetch(`${url}`,)
+      if (response.ok) {
+        let dataJson = await response.json()
+        if (dataJson.code === '200'){
+          if (dataJson.content !== ''){
+            return JSON.parse(dataJson.content)
+          }
+        }
+      }
+    }catch (e) {
+      console.log(e)
+    }
+    return null
+  }
+  const postJsonObject = async (uri: string, data: any) => {
+    let url = getApiServer(80) + uri
+    let response = await fetch(
+      `${url}`,
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      }
+    )
+    if (response.ok) {
+      let dataJson = await response.json()
+      if (dataJson.code === '200'){
+        if (dataJson.content !== ''){
+          return JSON.parse(dataJson.content)
+        }
+      }
+    }
+    return null
+  }
   const getPatoInfo = async (id: string) => {
     if (id === "") return null
-    let url = getApiServer(80) + api_url.portal.pato + "/" + id
+    let url = getApiServer(80) + api_url.portal.pato.info + "/" + id
     try {
       let response = await fetch(`${url}`,)
       if (response.ok) {
@@ -382,8 +420,8 @@ const useCommand = () => {
   }
   return { login, create_pato, getPatoInfo, getPatoHistoryMessages, deposit_metapower, archive_session, stake_metapower,
     refreshPatoAuthToken, queryPatoByKolToken, queryPatoKolToken, query_summary, query_knowledges, getKolList,
-    getTopicHots, get_topic_chat_his, log_user_activity, retrieve_pato_by_bame, become_kol, join_kol, get_pato_names,
-    getPredefinedTags, submit_pato_tags, getTownHots
+    getJsonObject, get_topic_chat_his, log_user_activity, retrieve_pato_by_bame, become_kol, join_kol, get_pato_names,
+    getPredefinedTags, submit_pato_tags, getTownHots, postJsonObject, getContent
   }
 }
 

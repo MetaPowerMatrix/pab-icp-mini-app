@@ -14,7 +14,17 @@
     background-color: white;
     color: black;
 }
-
+.my_topics_section {
+    height: 118px;
+    overflow: scroll;
+    border: 1px solid white;
+    border-radius: 8px;
+    background-color: white;
+}
+.topic_item {
+    margin-left: 10px;
+    font-size: 14px;
+}
 .prompt_input {
     width: 100%;
     padding: 12px;
@@ -27,4 +37,9 @@
     justify-content: space-between;
     padding: 20px;
     height: 30px;
+}
+
+.header_icon {
+    margin: 10px;
+    font-size: 16px;
 }

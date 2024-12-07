@@ -17,7 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const PatosComponent = ({ patos, myTags, myIds, height=80 }
-      :{patos: PortalHotAi[], myTags: (tags: string[])=>void, myIds: (tags: string[])=>void, height?: number}) =>{
+      :{patos: string[][], myTags: (tags: string[])=>void, myIds: (tags: string[])=>void, height?: number}) =>{
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -41,11 +41,11 @@ const PatosComponent = ({ patos, myTags, myIds, height=80 }
           <div style={{ height: height, overflow: 'scroll', width: '100%' }}>
               {patos.map<React.ReactNode>((tag) => (
                 <Tag.CheckableTag
-                  key={tag.id}
-                  checked={selectedTags.includes(tag.name)}
-                  onChange={(checked) => handleTagChange(tag.name, tag.id, checked)}
+                  key={tag[0]}
+                  checked={selectedTags.includes(tag[1])}
+                  onChange={(checked) => handleTagChange(tag[1], tag[0], checked)}
                 >
-                    <h3 style={{ fontSize: 12, color: "#eeb075" }}>{tag.name}</h3>
+                    <h3 style={{ fontSize: 12, color: "#eeb075" }}>{tag[1]}</h3>
                 </Tag.CheckableTag>
               ))}
           </div>
@@ -73,7 +73,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     const [sendQuery, setSendQuery] = useState<any>('')
     const [openPop, setOpenPop] = useState<boolean>(false)
     const [openTeam, setOpenTeam] = useState<boolean>(false)
-    const [patos, setPatos] = useState<PortalHotAi[]>([])
+    const [patos, setPatos] = useState<string[][]>([])
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploaded, setUploaded] = useState<boolean>(false)
@@ -87,17 +87,20 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
-        command.getTownHots().then((res) => {
-            if (res !== null) {
-                setPatos(res)
-            }
-        })
         let ctx = gsap.context(() => {
             gsap.from(headerRef.current, { y: -50, opacity: 0, duration: 1 });
             gsap.from(promptInputRef.current, { y: 50, opacity: 0, duration: 1 });
         });
         return () => ctx.revert();
     }, []);
+
+    useEffect(() => {
+        command.getPatoInfo(activeId).then((res): void => {
+            if ( res !== null){
+                setPatos(res.followings)
+            }
+        })
+    },[activeId]);
 
     useEffect(() => {
         setQueryText(query)

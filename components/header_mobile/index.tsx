@@ -52,8 +52,8 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 	const [reload, setReload] = useState<number>(0)
 	const [kols, setKols] = useState<KolInfo[]>([])
 	const [myKol, setMyKol] = useState<KolInfo|undefined>(undefined)
-	const [followers, setFollowers] = useState<PortalHotAi[]>([])
-	const [following, setFollowing] = useState<string[]>([])
+	const [followers, setFollowers] = useState<string[][]>([])
+	const [followings, setFollowings] = useState<string[][]>([])
 	const [popContent, setPopContent] = useState<string>("become_kol")
 	const [loading, setLoading] = useState(false);
 	const t = useTranslations('Login');
@@ -75,6 +75,8 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 				setAvatar(res.avatar)
 				setCover(res.cover)
 				setMyTags(res.tags)
+				setFollowers(res.followers)
+				setFollowings(res.followings)
 			}
 		})
 		command.queryPatoKolToken(activeId).then((res)=>{
@@ -92,30 +94,6 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 			})
 		})
 	},[activeId, reload]);
-
-	useEffect(() => {
-		command.getTownHots().then((res) => {
-			if (res !== null) {
-				let fl: PortalHotAi[] = []
-				res.forEach((info) => {
-					myKol?.followers.forEach((follower) => {
-						if (follower === info.id) {
-							fl.push(info)
-						}
-					})
-					setFollowers([...followers, ...fl])
-				})
-			}
-		})
-		let fw: string[] = []
-		kols.forEach((kol) => {
-			if (kol.followers.includes(myKol?.id ?? "")) {
-				fw.push(kol.name)
-			}
-		})
-		setFollowing(fw)
-
-	}, [myKol]);
 
 	const handleSubmitTags = () => {
 		setLoading(true)
@@ -218,7 +196,7 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 							{
 									followers.map((follower, index) => {
 										return (
-											<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.name}</span>
+											<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower[1]}</span>
 										)
 									})
 							}
@@ -228,9 +206,9 @@ const HeaderPanelMobile = ({activeId}: {activeId:string}) =>
 						<Meta title={relationshipHead("我的关注")}/>
 						<div style={{marginRight: 10, overflow: "hidden"}}>
 							{
-								following.map((follower, index) => {
+								followings.map((following, index) => {
 									return (
-										<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower}</span>
+										<span key={index} style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{following[1]}</span>
 									)
 								})
 							}

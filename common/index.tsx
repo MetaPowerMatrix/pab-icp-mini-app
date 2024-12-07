@@ -50,14 +50,16 @@ export interface KolInfo{
   avatar: string,
 }
 export interface PatoInfo {
-  sn: number,
   id: string,
   name: string,
+  sn: number,
   registered_datetime: string,
   balance: number,
   tags: string[],
   avatar: string,
   cover: string,
+  followers: []
+  followings: []
 }
 export enum MessageCategory {
   Human = "human",
@@ -72,7 +74,11 @@ export const api_url = {
   'portal': {
     'login': '/api/login',
     'register': '/api/register',
-    'pato': '/api/pato/info',
+    'pato': {
+      'info': '/api/pato/info',
+      'topics': '/api/pato/topics',
+      'post_topic': '/api/pato/submit/topic'
+    },
     'names': '/api/pato/names',
     'tags': '/api/pato/tags',
     'hots': '/api/pato/hots',
