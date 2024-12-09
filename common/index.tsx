@@ -77,7 +77,9 @@ export const api_url = {
     'pato': {
       'info': '/api/pato/info',
       'topics': '/api/pato/topics',
-      'post_topic': '/api/pato/submit/topic'
+      'post_topic': '/api/pato/submit/topic',
+      'topic_comments': '/api/topic/chat/history',
+      'topic_comment_embedding': '/api/topic/embedding'
     },
     'names': '/api/pato/names',
     'tags': '/api/pato/tags',

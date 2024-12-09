@@ -70,6 +70,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     const promptInputRef = useRef(null);
     const [stopped, setStopped] = useState<boolean>(true);
     const [queryText, setQueryText] = useState<string>(query)
+    const [atQueryText, setAtQueryText] = useState<string>(query)
     const [sendQuery, setSendQuery] = useState<any>('')
     const [openPop, setOpenPop] = useState<boolean>(false)
     const [openTeam, setOpenTeam] = useState<boolean>(false)
@@ -227,8 +228,12 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                 handleKnowledge(api_url.portal.knowledge.upload)
             }
         }else{
+            let send_text = queryText
+            if (atIds.length > 0){
+                send_text = name + ": " + queryText.replace(atQueryText, "")
+            }
             let question = {
-                input: queryText,
+                input: send_text,
                 customer_info: name,
                 atIds: atIds,
                 autoReply: true,
@@ -322,10 +327,6 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                               </Upload>
                           </Col>
                           <Col span={2}>
-                              <SearchOutlined style={{color: "black", fontSize: 14}}
-                                              onClick={sendQueryKnowledgeMessage}/>
-                          </Col>
-                          <Col span={2}>
                               {stopped ?
                                 <AudioOutlined style={{color: "black", fontSize: 14}} onClick={() => stop_record()}/>
                                 :
@@ -346,6 +347,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                                                         myTags={(tags) => {
                                                             setGameRound(false)
                                                             setQueryText("@"+tags.join(" @"))
+                                                            setAtQueryText("@"+tags.join(" @"))
                                                             setSelectedPatos(tags)
                                                         }}
                                                         myIds={(ids) => {
@@ -373,7 +375,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                                 open={openPop}
                                 onOpenChange={handleOpenChange}
                               >
-                                  <TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
+                                  {/*<TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>*/}
                                   {
                                       selectedTags.map((tag, index) => {
                                           return (
@@ -386,6 +388,10 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                                       })
                                   }
                               </Popover>
+                          </Col>
+                          <Col span={2}>
+                              <SearchOutlined style={{color: "black", fontSize: 14}}
+                                              onClick={sendQueryKnowledgeMessage}/>
                           </Col>
                           <Col span={1}>
                               <SendOutlined style={{color: "black", fontSize: 14, marginLeft: 10}}

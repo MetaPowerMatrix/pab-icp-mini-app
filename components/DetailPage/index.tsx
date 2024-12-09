@@ -6,7 +6,7 @@ import {
     SendOutlined,
     UnorderedListOutlined, PushpinOutlined
 } from "@ant-design/icons";
-import {Avatar, List} from "antd";
+import {Avatar, List, Modal, Rate} from "antd";
 import {useSwipe} from "../UseSwipe";
 import AIChat from "../AIChat";
 import React, {useEffect, useState} from "react";
@@ -28,7 +28,7 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [showMyTopics, setShowMyTopics] = useState(false)
     const [myTopics, setMytopics] = useState<string[][]>([])
-    const [topicComments, setTopicComments] = useState<string[][]>([])
+    const [star, setStar] = useState<number>(4)
     const router = useRouter();
     const command = commandDataContainer.useContainer()
 
@@ -36,8 +36,30 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
         setQueryText(query)
     }, [query])
 
-    const getTopicCommnets = () => {
-
+    const getTopicCommnets = (topic: string) => {
+        let data = {topic: topic, prompt: "", contributor:"", session:""}
+        command.postJsonObject(api_url.portal.pato.topic_comments, data).then((res: []) => {
+            if (res !== null ){
+                let msgs: ChatMessage[] = []
+                res.map((item: any) => {
+                    let msg: ChatMessage = {
+                        sender: item[1],
+                        content: item[0],
+                        type: 'text'
+                    }
+                    msgs.push(msg)
+                })
+                setMessages(msgs)
+            }
+        })
+    }
+    const embeddingTopicComment = (comment: string) => {
+        let data = {topic: comment, prompt: "", contributor:"", session:""}
+        command.postJsonObject(api_url.portal.pato.topic_comment_embedding, data).then((res: []) => {
+            Modal.success({
+                content: '评论已分享到知识库，可以查询使用'
+            })
+        })
     }
 
     const switchMyTopics = () =>{
@@ -56,6 +78,9 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
     const submit_topic = () => {
         let topic = [queryText, new Date().toLocaleDateString()]
         command.postJsonObject(api_url.portal.pato.post_topic + "/" + activeId, topic).then((res) => {
+            Modal.success({
+                content: '话题已上传，等待小镇pato来回答'
+            })
             if (res !== null) {
                 console.log(res)
             }
@@ -138,18 +163,18 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
                         size="small"
                         dataSource={myTopics}
                         renderItem={(item, index) => (
-                          <List.Item key={index} onClick={getTopicCommnets}>
+                          <List.Item key={index} onClick={() => getTopicCommnets(item[0])}>
                               <div style={{display: "flex", justifyContent: "space-between"}}>
                                   <div>
                                       <PushpinOutlined/><span className={styles.topic_item}>{item[0]}</span>
                                   </div>
                                   <div>
-                                      <span className={styles.topic_item}>{item[1]}</span>
+                                      <span className={styles.topic_item_small}>{item[1]}</span>
                                   </div>
                               </div>
                           </List.Item>
-                        )}
-                      />
+                            )}
+                          />
                   </div>
             }
 
@@ -159,19 +184,30 @@ const DetailPage: React.FC<DetailPageProps>  = ({activeId, name, query, ctrlVoic
                   size="small"
                   dataSource={messages}
                   renderItem={(item, index) => (
-                  <List.Item key={index} style={{color: "white"}}>
-                      <List.Item.Meta
-                        avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}/>}
-                        title={<><a style={{color: "white"}}>{item.sender}</a></>}
-                      />
-                      {item.content}
-                  </List.Item>
-                )}
-              />
-          </div>
-          <AIChat uri={"/topic"} activeId={activeId} process_ws_message={process_chat_message}
-                  question={sendQuery}/>
-      </div>
+                    <List.Item key={index} style={{color: "white"}}>
+                        <List.Item.Meta
+                          avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}/>}
+                          title={<><a style={{color: "white"}}>{item.sender}</a></>}
+                        />
+                        {item.content}
+                        <div style={{display: "flex", justifyContent: "space-between"}}>
+                            <div>
+                                <Rate style={{marginTop: 10}} defaultValue={1} value={star} onChange={(e)=>{
+                                    setStar(e)
+                                    embeddingTopicComment(item.content)
+                                }}/>
+                            </div>
+                            <div>
+                                <button className={styles.dislike_btn}>不喜欢</button>
+                            </div>
+                        </div>
+                    </List.Item>
+                  )}
+                />
+            </div>
+            <AIChat uri={"/topic"} activeId={activeId} process_ws_message={process_chat_message}
+                    question={sendQuery}/>
+        </div>
     )
 }
 

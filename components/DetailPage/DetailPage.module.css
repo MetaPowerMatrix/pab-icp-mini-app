@@ -22,8 +22,11 @@
     background-color: white;
 }
 .topic_item {
-    margin-left: 10px;
     font-size: 14px;
+    margin-left: 10px;
+}
+.topic_item_small {
+    font-size: 12px;
 }
 .prompt_input {
     width: 100%;
@@ -42,4 +45,13 @@
 .header_icon {
     margin: 10px;
     font-size: 16px;
+}
+
+.dislike_btn {
+    margin-top: 8px;
+    width: 100px;
+    padding: 2px 6px;
+    color: black;
+    border: none;
+    border-radius: 15px;
 }
