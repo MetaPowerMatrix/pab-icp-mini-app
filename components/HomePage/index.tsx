@@ -2,28 +2,33 @@ import React, {useEffect, useRef, useState} from 'react';
 import { gsap } from 'gsap';
 import styles from './HomePage.module.css';
 import {
+	ArrowDownOutlined, DownOutlined,
 	HeartOutlined,
 	MenuUnfoldOutlined, PlusOutlined,
 	SearchOutlined,
 } from "@ant-design/icons";
 import {useGSAP} from "@gsap/react";
-import {PatoInfo, TopicInfo} from "@/common";
+import {api_url, ChatMessage, KolInfo, PatoInfo, TopicInfo} from "@/common";
 import commandDataContainer from "@/container/command";
-import {Drawer, Switch} from "antd";
+import {Avatar, Drawer, List, Rate, Switch} from "antd";
 import { useRouter } from 'next/router';
+import {doMd5Sum} from "@/lib/utils";
 
 // Define types for ref elements
 interface HomePageProps {
 	activeId: string;
+	name: string;
 }
 
-const HomePage: React.FC<HomePageProps> = ({activeId}) => {
+const HomePage: React.FC<HomePageProps> = ({activeId, name}) => {
 	const upgradeRef = useRef<HTMLDivElement>(null);
 	const trendingVideoRef = useRef<HTMLDivElement>(null);
 	const [avatar, setAvatar] = useState('/images/notlogin.png')
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const [open, setOpen] = useState(false);
-	const [topics, setTopics] = useState<TopicInfo[]>([])
+	const [topics, setTopics] = useState<string[][]>([])
+	const [comments, setComments] = useState<ChatMessage[]>([])
+	const [openComments, setOpenComments] = useState<boolean[]>([])
 	const command = commandDataContainer.useContainer()
 	const router = useRouter();
 
@@ -36,6 +41,28 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 		})
 	},[activeId]);
 
+	useEffect(() => {
+		command.getKolList().then((res) =>{
+			let kol_topics: string[][] = []
+			let i = 0
+			let topic_comments: ChatMessage[] = []
+			res.forEach((info) =>{
+				i++
+				command.getJsonObject(api_url.portal.pato.topics + "/" + info.id).then((res) => {
+					if (res !== null) {
+						kol_topics = [...kol_topics, ...res]
+						let opened: boolean[] = []
+						kol_topics.forEach(() => {
+							opened = [...opened, false]
+						})
+						setOpenComments(opened)
+						setTopics(kol_topics)
+					}
+				})
+			})
+		})
+	},[]);
+
 	useGSAP(() => {
 		// Animate elements when the page loads using GSAP
 		if (upgradeRef.current) {
@@ -44,6 +71,37 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 		}
 	}, []);
 
+	const getComments = (topic: string, index: number) => {
+		if (openComments[index]){
+			// console.log(openComments)
+			setOpenComments((prev) => {
+				let opened: boolean[] = prev
+				opened[index] = false
+				return opened
+			})
+		}else{
+			// let topic_id = doMd5Sum(topic)
+			let data = {topic: topic, prompt: "", contributor:"", session:""}
+			command.postJsonObject(api_url.portal.pato.topic_comments, data).then((res: []) => {
+				if (res !== null ){
+					let msgs: ChatMessage[] = []
+					res.map((item: any) => {
+						let msg: ChatMessage = {
+							sender: item[1],
+							content: item[0],
+							type: 'text'
+						}
+						msgs.push(msg)
+					})
+					setComments(msgs)
+					let opened: boolean[] = openComments
+					opened[index] = true
+					setOpenComments(opened)
+				}
+			})
+		}
+
+	}
 	const showDrawer = () => {
 		setOpen(true);
 	};
@@ -95,17 +153,31 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 							</div>
 						</div>
 					</div>
-					<div>
+					<div style={{height: 800}}>
 						{
 							topics.map((item, index) => (
 								<div key={index} className="goods">
 									<div className={styles.video_item}>
-										<img src={item.cover} className={styles.video_thumbnail}/>
+										{/*<img src={''} className={styles.video_thumbnail}/>*/}
 										<div className={styles.video_info}>
-											<p>{item.title}</p>
-											<h5>{item.tags.join('#')}</h5>
-											<button>详情</button>
-											<button>Like <HeartOutlined/></button>
+											<p><Avatar style={{marginRight:10}} size={"small"} src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}/>{item[0]}</p>
+											<h5>{item[1]}</h5>
+										</div>
+										<div className={styles.topic_button_container}>
+											<div>{}</div>
+											<button className={styles.topic_button}><DownOutlined onClick={() => getComments(item[0], index)} /></button>
+										</div>
+										<div hidden={!openComments[index] ?? false}>
+											<List
+												itemLayout="vertical"
+												size="small"
+												dataSource={comments}
+												renderItem={(item, index) => (
+													<List.Item key={index} style={{color: "white"}}>
+														{item.sender}: {item.content}
+													</List.Item>
+												)}
+											/>
 										</div>
 									</div>
 								</div>

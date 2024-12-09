@@ -31,7 +31,7 @@ export interface HotPro{
   subjects: string[]
 }
 export interface TopicInfo{
-  id: string,
+  topic: string,
   title: string,
   tags: string[],
   cover: string,

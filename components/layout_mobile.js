@@ -76,7 +76,7 @@ export default function LayoutMobile({children, title, description, onRefresh, s
         return(
             <>
                 {key === 'home' &&
-                    <HomePage ctrlVoiceStart={stop_record} query={query} activeId={activeId}/>
+                    <HomePage name={activeName} ctrlVoiceStart={stop_record} query={query} activeId={activeId}/>
                 }
                 {key === 'chat' &&
                     <MobileFramework notify={notify} ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>

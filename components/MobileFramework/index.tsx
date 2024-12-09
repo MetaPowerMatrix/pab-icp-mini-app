@@ -8,11 +8,12 @@ import {
 } from "@ant-design/icons";
 import {Button, Col, GetProp, Modal, Popover, Row, Tag, Upload, UploadFile, UploadProps} from "antd";
 import commandDataContainer from "../../container/command";
-import {api_url, ChatMessage, getApiServer, MessageCategory, PortalHotAi} from "@/common";
+import {api_url, ChatMessage, getApiServer, KolInfo, MessageCategory, PortalHotAi} from "@/common";
 import TagsComponent from "@/components/tags";
 import ChatListComponet from "@/components/ChatList";
 import AIChat from "@/components/AIChat";
 import { v4 as uuidv4 } from 'uuid';
+import ProgressBarComponent from "@/components/ProgressBar";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -84,7 +85,8 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     const [session, setSession] = useState<string>(uuidv4())
     const [aiReplies, setAiReplies] = useState<AIReply[]>([]);
     const [atIds, setAtIds] = useState<string[]>([])
-    const [reply, setReply] = useState<AIReply>();
+    const [loading, setLoading] = useState(false);
+    const [reply, setReply] = useState<AIReply|undefined>(undefined);
     const command = commandDataContainer.useContainer()
 
     useEffect(() => {
@@ -108,6 +110,11 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
     }, [query])
 
     useEffect(() => {
+        patos.forEach((pato) => {
+            if (reply !== undefined && reply?.sender !== '' && pato[0] === reply?.sender){
+                reply!.message = pato[1] + ": " + reply?.message
+            }
+        })
         // @ts-ignore
         listRef.current?.addItem(reply)
     },[reply])
@@ -163,17 +170,17 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
           .then(response => response.json())
           .then(data => {
               let reply: AIReply = {
-                  sender: '秘书',
+                  sender: '',
                   message: data.content,
                   imageUrl: '',
                   link: '',
                   category: MessageCategory.Human,
                   status: "enter"
               }
-              console.log(reply)
               setAiReplies((aiReplies) => [...aiReplies, reply])
               setReply(reply)
 
+              setLoading(false)
               setFileList([])
           })
           .catch((error) => {
@@ -219,12 +226,11 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
         setSendQuery(question)
     }
     const sendMessageToAI = () => {
+        setLoading(true)
         if (fileList.length > 0){
             if (imageUploaded){
-                setGameRound(false)
                 handleKnowledge(api_url.portal.image.upload)
             }else if (uploaded){
-                setGameRound(false)
                 handleKnowledge(api_url.portal.knowledge.upload)
             }
         }else{
@@ -246,50 +252,50 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
         setGameRound(false)
         command.query_knowledges(queryText).then((res) => {
             let reply: AIReply = {
-                sender: '秘书',
+                sender: '',
                 message: res,
                 imageUrl: '',
                 link: '',
                 category: MessageCategory.Human,
                 status: "enter"
             }
-            console.log(reply)
-
-            setAiReplies((aiReplies) => [...aiReplies, reply])
             setReply(reply)
         })
     }
     const process_chat_message = (event: any) => {
         if (event.data.toString() !== 'pong' && event.data.toString() !== '数据格式错误'){
-            // console.log(event.data.toString())
+            setLoading(false)
             let resp: [] = JSON.parse(event.data.toString())
+            console.log(resp)
+            let i = 0
             resp.forEach((message: any) => {
-                if (message['role'] === "user"){
-                    let reply: AIReply = {
-                        sender: '我',
-                        message: message['content'],
-                        imageUrl: '',
-                        link: '',
-                        category: MessageCategory.Human,
-                        status: "enter"
+                    if (message['role'] === "user"){
+                        let reply: AIReply = {
+                            sender: '我',
+                            message: message['content'],
+                            imageUrl: '',
+                            link: '',
+                            category: MessageCategory.Human,
+                            status: "enter"
+                        }
+                        setTimeout(() => {
+                            setReply(reply)
+                        }, i*5000)
                     }
-                    setAiReplies((aiReplies) => [...aiReplies, reply])
-                    // @ts-ignore
-                    listRef.current?.addItem(reply)
-                }
-                if (message['role'] === "assistant" && message['content'] !== null){
-                    let reply: AIReply = {
-                        sender: message['sender'],
-                        message: message['content'],
-                        imageUrl: '',
-                        link: '',
-                        category: MessageCategory.Card,
-                        status: "enter"
+                    if (message['role'] === "assistant" && message['content'] !== null){
+                        let reply: AIReply = {
+                            sender: message['sender_id'],
+                            message: message['content'],
+                            imageUrl: '',
+                            link: '',
+                            category: MessageCategory.Card,
+                            status: "enter"
+                        }
+                        setTimeout(() => {
+                            setReply(reply)
+                        }, i*5000)
                     }
-                    setAiReplies((aiReplies) => [...aiReplies, reply])
-                    // @ts-ignore
-                    listRef.current?.addItem(reply)
-                }
+                i++
             })
         }
     }
@@ -312,6 +318,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                           </Col>
                           <Col span={2}>
                               <FileImageOutlined onClick={(e)=>{
+                                  setGameRound(false)
                                   setImageUploaded(true); document.getElementById('upload-image')?.click();
                               }}/>
                               <Upload id="upload-image" maxCount={1} showUploadList={false} {...props}>
@@ -320,6 +327,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
                           </Col>
                           <Col span={2}>
                               <PlusOutlined onClick={(e)=>{
+                                  setGameRound(false)
                                   setUploaded(true); document.getElementById('upload-input')?.click();
                               }}/>
                               <Upload id="upload-input" maxCount={1} showUploadList={false} {...props}>
@@ -405,6 +413,7 @@ const MobileFramework = ({name, activeId, query, notify, ctrlVoiceStart}
               <ChatListComponet ref={listRef} />
           </div>
           <AIChat uri={"/sales"} activeId={activeId} process_ws_message={process_chat_message} question={sendQuery}/>
+          <ProgressBarComponent visible={loading} steps={15}/>
       </>
     );
 };
